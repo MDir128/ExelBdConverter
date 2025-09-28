@@ -1,17 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Text.Json;
 
 namespace ExelBdConverter;
 
@@ -34,6 +24,7 @@ public partial class MainWindow : Window
         {
             try
             {
+                Console.WriteLine("start table");
                 OpenTableProcess(path);
             }
             catch { }
@@ -53,18 +44,20 @@ public partial class MainWindow : Window
         // процесс настроен так, что необходимо при работе с ним в первую
         // очередь запускать метод ThrowStartDataInProcc(),
         // в котором он запомнит адресс файла с которым работает
-        ProccPy tableview = new ProccPy("pytableplot.py");
-        tableview.ThrowStartDataInProcc(table_path);
-        testProcess(tableview);
-        excelpro.Exited += (s, e) => {
+        ProccPy tableview = new ProccPy(@"PythonSubProg\pytableplot.py");
+        tableview.ThrowStartDataInProcc("FILE=" + table_path);
+        MessageBox.Show(testProcess(tableview));
+        excelpro.Exited += (s, e) =>
+        {
             tableview.Close();
             MessageBox.Show("Вышел");
         };
     }
-    private void testProcess(ProccPy procc)
+    private string testProcess(ProccPy procc)
     {
         string response = procc.ChecProcc();
-        Console.WriteLine(response);
+        return response;
+
     }
 
     class ProccPy
@@ -83,17 +76,17 @@ public partial class MainWindow : Window
             pysubproc.StartInfo = new ProcessStartInfo()
             {
                 FileName = "python.exe",
-                Arguments = $"PythonSubProg\"{path}",
+                Arguments = path,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
             };
             pysubproc.Start();
             stdin = pysubproc.StandardInput;
             stdout = pysubproc.StandardOutput;
-
         }
+
         public void ThrowStartDataInProcc(string data)
         {
             stdin.WriteLine(data);
@@ -103,12 +96,12 @@ public partial class MainWindow : Window
         {
             stdin.WriteLine("CHECK!");
             stdin.Flush();
-            string? output = stdout.ReadLine();
-            if (output != null)
+            try
             {
+                string output = stdout.ReadLine();
                 return output;
             }
-            else
+            catch
             {
                 return "Oh, no!";
             }

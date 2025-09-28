@@ -4,3 +4,6 @@
 
 /obj
 /bin/Debug/net8.0-windows
+/.vs
+*.sln
+*.csproj.user
