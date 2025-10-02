@@ -5,10 +5,38 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ExelBdConverter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Menu>
-            <MenuItem Header="open" Click="OpenTableClick"/>
-        </Menu>
-    </Grid>
+        Title="Excel Converter" Height="450" Width="560" WindowStyle="ThreeDBorderWindow">
+	<Grid x:Name="MainRoot" Background="LightGreen">
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<TextBlock Grid.Column="1" Text="История:" Margin="186,5,23,31" Grid.RowSpan="2" Grid.Row="1" Grid.ColumnSpan="2"/>
+		<Button Content="Очистить историю" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="11" VerticalAlignment="Center" Foreground="Black" BorderBrush="Black"/>
+		<TabControl Margin="10,36,186,36" Grid.RowSpan="12" Grid.ColumnSpan="2">
+			<TabItem Header="Инструменты">
+				<Grid Background="PaleGreen">
+					<Button Content="Открыть файл" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="OpenTableClick"/>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Логи">
+				<Grid Background="PaleGreen"/>
+			</TabItem>
+		</TabControl>
+	</Grid>
 </Window>
