@@ -45,8 +45,7 @@ public partial class MainWindow : Window
         // процесс настроен так, что необходимо при работе с ним в первую
         // очередь запускать метод ThrowStartDataInProcc(),
         // в котором он запомнит адресс файла с которым работает
-        tableview = new ProccPy(@"PythonSubProg\pytableplot.py");
-        tableview.ThrowStartDataInProcc("FILE=" + table_path);
+        tableview = new ProccPy(@"PythonSubProg\pytableplot.py", "FILE=" + table_path);
         MessageBox.Show(testProcess(tableview));
         excelpro.Exited += (s, e) =>
         {
@@ -60,7 +59,10 @@ public partial class MainWindow : Window
         return response;
 
     }
-
+    // Процесс потока Питона - при создании Запускает в качестве нового процесса файл питона, казанный в конструкторе
+    // для взаимодействия с процессом использовать функцию ThrowaCommandDataResp -
+    // в качестве аргуемнта - команда с данными,
+    // а в качестве возвращаемого значения - вывод процесса
     class ProccPy
     {
         private StreamWriter stdin;
@@ -70,8 +72,10 @@ public partial class MainWindow : Window
         {
             stdin.Close();
             stdout.Close();
+            pysubproc.CancelErrorRead();
+            pysubproc.Close();
         }
-        public ProccPy(string path)
+        public ProccPy(string path, string start_data)
         {
             
             pysubproc = new Process();
@@ -98,13 +102,29 @@ public partial class MainWindow : Window
             {
                 Debug.WriteLine("Nah, I'm done here, good luck");
             };
-            
+            this.ThrowStartDataInProcc(start_data);
         }
-
+        ~ProccPy() {
+            this.Close();
+        }
         public void ThrowStartDataInProcc(string data)
         {
             stdin.WriteLine(data);
             stdin.Flush();
+        }
+        public string ThrowaCommandDataResp(string command, string data)
+        {
+            stdin.WriteLine(command + ":" + data);
+            stdin.Flush();
+            string? output = stdout.ReadLine();
+            if (output != null)
+            {
+                return output;
+            }
+            else
+            {
+                return "null";
+            }
         }
         public string ChecProcc()
         {
@@ -113,9 +133,16 @@ public partial class MainWindow : Window
             
             try
             {
-                string output = stdout.ReadLine();
+                string? output = stdout.ReadLine();
                 Debug.WriteLine("output" + output);
-                return output;
+                if (output!=null)
+                {
+                    return output;
+                }
+                else
+                {
+                    return "null";
+                }
             }
             catch
             {

@@ -6,11 +6,9 @@ def main():
         line = sys.stdin.readline().strip()
         if line.startswith("FILE="):
             filename = line[5:]
-            print(filename)
-            with open("python_alive.txt", "w") as f:
-                        f.write(f"Python is alive! Processing: {filename}")
         elif line == "CHECK!":
             print (filename, flush=True)
-
+        else:
+            print("uncknown command", flush=True)
 if __name__ == "__main__":
     main()
