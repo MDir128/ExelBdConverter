@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace ExelBdConverter;
 
@@ -10,6 +13,7 @@ namespace ExelBdConverter;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private List<string> fileHistory = new List<string>(); // Список для хранения истории
     ProccPy tableview;
     public MainWindow()
     {
@@ -25,12 +29,48 @@ public partial class MainWindow : Window
         {
             try
             {
+                AddFileToHistory(path); // Добавляем файл в историю
+
                 Console.WriteLine("start table");
                 OpenTableProcess(path);
             }
             catch { }
         }
     }
+
+    // Функция для добавления файла в историю
+    private void AddFileToHistory(string filePath)
+    {
+        // Получение названия файла
+        string fileName = Path.GetFileName(filePath);
+
+        // Добавление в начало списка
+        fileHistory.Insert(0, fileName);
+
+        // Обновление ListBox
+        UpdateHistoryListBox();
+    }
+
+    // Функция для обновления ListBox
+    private void UpdateHistoryListBox()
+    {
+        // Необходимо очистить ListBox
+        HistoryListBox.Items.Clear();
+
+        // Добавить все файлы из истории
+        foreach (string fileName in fileHistory)
+        {
+            HistoryListBox.Items.Add(fileName);
+        }
+    }
+
+    // Функция для кнопки "Очистить историю"
+    private void ClearHistoryClick(object sender, RoutedEventArgs e)
+    {
+        fileHistory.Clear(); // Очищаем список
+        HistoryListBox.Items.Clear(); // Очищаем ListBox
+    }
+
     public void OpenTableProcess(string table_path)
     {
         Process excelpro = new Process();
@@ -53,12 +93,19 @@ public partial class MainWindow : Window
             MessageBox.Show("Вышел");
         };
     }
+
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        //В будущем будет реализован выбор элементов
+    }
+
     private string testProcess(ProccPy procc)
     {
         string response = procc.ChecProcc();
         return response;
 
     }
+
     // Процесс потока Питона - при создании Запускает в качестве нового процесса файл питона, казанный в конструкторе
     // для взаимодействия с процессом использовать функцию ThrowaCommandDataResp -
     // в качестве аргуемнта - команда с данными,
