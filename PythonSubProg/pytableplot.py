@@ -1,7 +1,7 @@
-import sys
-from XlsArrayer import XlsArrayerOut
-from tabledifffun import tables_differences
-
+import sys, os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, script_dir)
+from tabledifffun import *
 def main():
     filename = ""
     while True:
@@ -16,7 +16,7 @@ def main():
             if SavedTable == '':
                 print("no saved previous result(nothing to compare)", flush=True)
             else:
-                tables_differences(SavedTable, XlsArrayerOut(filename), False, flushd=True) #настроен на печать вывода 
+                print(tables_differences(SavedTable, XlsArrayerOut(filename), False), flush=True) #настроен на печать вывода 
         elif line == "CHECK!":
             print (filename, flush=True)
         else:

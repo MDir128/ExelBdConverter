@@ -85,7 +85,7 @@ public partial class MainWindow : Window
         // процесс настроен так, что необходимо при работе с ним в первую
         // очередь запускать метод ThrowStartDataInProcc(),
         // в котором он запомнит адресс файла с которым работает
-        tableview = new ProccPy(@"PythonSubProg\pytableplot.py", "FILE=" + table_path);
+        tableview = new ProccPy(@"pytableplot.py", "FILE=" + table_path);
         MessageBox.Show(testProcess(tableview));
         excelpro.Exited += (s, e) =>
         {
@@ -135,6 +135,7 @@ public partial class MainWindow : Window
                 RedirectStandardError = true,
                 CreateNoWindow = true,
                 UseShellExecute = false,
+                WorkingDirectory = @"PythonSubProg"
             };
             pysubproc.Start();
             pysubproc.BeginErrorReadLine();

@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import openpyxl
 
+NAME = "XlsArrayer"
 def XlsArrayerOut(cheker):
     if not os.path.exists(cheker):
         print("file err", cheker)
