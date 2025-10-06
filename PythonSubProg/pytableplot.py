@@ -16,7 +16,7 @@ def main():
             if SavedTable == '':
                 print("no saved previous result(nothing to compare)", flush=True)
             else:
-                tables_differences(SavedTable, XlsArrayerOut(filename), False, flush=True) #настроен на печать вывода 
+                tables_differences(SavedTable, XlsArrayerOut(filename), False, flushd=True) #настроен на печать вывода 
         elif line == "CHECK!":
             print (filename, flush=True)
         else:

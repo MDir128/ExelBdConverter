@@ -3,7 +3,7 @@
 import json
 
 #основная функция
-def tables_differences(prev_table, curr_table, switch):
+def tables_differences(prev_table, curr_table, switch, flushd):
     
     #преобразовываем списки в словари
     prev_dict = {f"{el[0]}{el[1]}": (el[2], el[3]) for el in prev_table}
@@ -47,6 +47,6 @@ def tables_differences(prev_table, curr_table, switch):
         print("----------------------------------------------------------------------------")
 
     #преобразуем наш словарь в JSON-строку
-    print(json.dumps(differences, indent=2))
+    print(json.dumps(differences, indent=2), flush=flushd)
     return differences
 
