@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace ExelBdConverter;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private List<string> fileHistory = new List<string>(); // Список для хранения истории
+    private List<KeyValuePair<string, string>> fileHistory = new List<KeyValuePair<string, string>>(); //Словарь для хранения истории. Ключ - имя файла, значение - путь
+    private const int MaxHistorySize = 10; // Ограничение для списка открытых файлов
     ProccPy tableview;
     public MainWindow()
     {
@@ -44,12 +46,22 @@ public partial class MainWindow : Window
         // Получение названия файла
         string fileName = Path.GetFileName(filePath);
 
-        // Добавление в начало списка
-        fileHistory.Insert(0, fileName);
+        // Удаляем дубликаты
+        fileHistory.RemoveAll(x => x.Key == fileName);
 
-        // Обновление ListBox
+        // Добавление в начало списка
+        fileHistory.Insert(0, new KeyValuePair<string, string>(fileName, filePath));
+
+        // Ограничиваем размер истории
+        if (fileHistory.Count > MaxHistorySize)
+        {
+            fileHistory.RemoveAt(MaxHistorySize);
+        }
+
+        //Обновление ListBox
         UpdateHistoryListBox();
     }
+    
 
     // Функция для обновления ListBox
     private void UpdateHistoryListBox()
@@ -58,9 +70,9 @@ public partial class MainWindow : Window
         HistoryListBox.Items.Clear();
 
         // Добавить все файлы из истории
-        foreach (string fileName in fileHistory)
+        foreach (var item in fileHistory)  // Перебор KeyValuePair
         {
-            HistoryListBox.Items.Add(fileName);
+            HistoryListBox.Items.Add(item.Key);  // Берем только ключ (имя файла)
         }
     }
 
@@ -94,9 +106,13 @@ public partial class MainWindow : Window
         };
     }
 
-    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void HistoryListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        //В будущем будет реализован выбор элементов
+        if (HistoryListBox.SelectedIndex >= 0)
+        {
+            var selectedItem = fileHistory[HistoryListBox.SelectedIndex];
+            OpenTableProcess(selectedItem.Value);  // Используем Value (полный путь)
+        }
     }
 
     private string testProcess(ProccPy procc)
