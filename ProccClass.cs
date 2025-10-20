@@ -94,26 +94,9 @@ namespace ExelBdConverter
             stdin.Flush();
             await GetAnswer();
         }
-        public string ChecProcc()
+        public void ChecProcc()
         {
-            ThrowaCommandDataResp("CHECK!", null);
-            try
-            {
-                string? output = stdout.ReadLine();
-                Debug.WriteLine("output" + output);
-                if (output != null)
-                {
-                    return output;
-                }
-                else
-                {
-                    return "null";
-                }
-            }
-            catch
-            {
-                return "Oh, no!";
-            }
+            ThrowaCommandDataResp("Debug$CHECK!", null);
         }
         private async Task GetAnswer()
         {

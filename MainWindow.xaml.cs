@@ -16,11 +16,14 @@ public partial class MainWindow : Window
 {
     private List<KeyValuePair<string, string>> fileHistory = new List<KeyValuePair<string, string>>(); //Словарь для хранения истории. Ключ - имя файла, значение - путь
     private const int MaxHistorySize = 10; // Ограничение для списка открытых файлов
-    ProccPy tableview;
+    ProccPy tableview; // Объект процесса питон
     public MainWindow()
     {
         InitializeComponent();
     }
+
+    //Buttons
+
     public void OpenTableClick(Object sender, RoutedEventArgs args)
     {
         OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -39,6 +42,32 @@ public partial class MainWindow : Window
             catch { }
         }
     }
+
+    // DeepFunctions
+
+    // Для получения информации из потока используется подобная функция
+
+    // Описание самой функции, которая всякий раз будет активироваться когда процесс выдает значение
+
+    //private void testProcess(ProccPy procc)
+    //{
+    //    procc.ThrowaCommandDataResp("Commad/Flag$"+args/data) // на 
+    //    EventHandler<string> eventhandlex = null;                 // задание пустой лямбда-функции
+    //    eventhandlex = (s, e) => {                                // для отлавливания значения, рекомендуется использовать лямбда функцию такого вида
+    //        response = e;                                         // В качестве значения работы процесса исользуется в данном случае аргумент e
+    //        string[] gotresp = response.Split('$');
+    //        if (gotresp.Length == 2)
+    //        {
+    //            if (gotresp[0] == "Debug")                        // Функция всегда возвращает флаг, который был подан в начале аргумента команды с разделителем '$'
+    //            {
+    //                Debug.WriteLine(response);
+    //                procc.GotAnswer -= eventhandlex;              // В обязательном порядке, требуется добавить в конец лямбда функции, её отписку от события
+    //            }
+    //        }
+    //    };
+    //    Debug.WriteLine("StartedTestResp");
+    //    procc.GotAnswer += eventhandlex;
+    //}
 
     // Функция для добавления файла в историю
     private void AddFileToHistory(string filePath)
@@ -61,6 +90,7 @@ public partial class MainWindow : Window
         //Обновление ListBox
         UpdateHistoryListBox();
     }
+    
     
 
     // Функция для обновления ListBox
@@ -97,7 +127,7 @@ public partial class MainWindow : Window
         // процесс настроен так, что необходимо при работе с ним в первую
         // очередь запускать метод ThrowStartDataInProcc(),
         // в котором он запомнит адресс файла с которым работает
-        tableview = new ProccPy(@"pytableplot.py", "FILE=" + table_path);
+        tableview = new ProccPy(@"pytableplot.py", "SetFILE$" + table_path);
         testProcess(tableview);
         excelpro.Exited += (s, e) =>
         {
@@ -117,12 +147,19 @@ public partial class MainWindow : Window
 
     private void testProcess(ProccPy procc)
     {
-        string response = procc.ChecProcc();
+        procc.ChecProcc();
         EventHandler<string> eventhandlex = null;
         eventhandlex = (s, e) => {
-            response = e;
-            Debug.WriteLine(response);
-            procc.GotAnswer -= eventhandlex;
+            string response = e;
+            string[] gotresp = response.Split('$');
+            if (gotresp.Length == 2)
+            {
+                if (gotresp[0] == "Debug")
+                {
+                    Debug.WriteLine(gotresp[1]);
+                    procc.GotAnswer -= eventhandlex;
+                }
+            }
         };
         Debug.WriteLine("StartedTestResp");
         procc.GotAnswer += eventhandlex;
