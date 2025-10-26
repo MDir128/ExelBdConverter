@@ -29,6 +29,6 @@
 				<Grid Background="#36D88E"/>
 			</TabItem>
 		</TabControl>
-		<ListBox x:Name="HistoryListBox" Grid.Column="1" MouseDoubleClick="HistoryListBox_MouseDoubleClick" d:ItemsSource="{d:SampleData ItemCount=5}" Opacity="1" Margin="0,24,10,0" Background="#61D8A2" BorderBrush="White" BorderThickness="2" Grid.Row="1"/>
+		<ListBox x:Name="HistoryListBox" Grid.Column="1" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ListBox_SelectionChanged" Opacity="1" Margin="0,24,10,0" Background="#61D8A2" BorderBrush="White" BorderThickness="2" Grid.Row="1"/>
 	</Grid>
 </Window>

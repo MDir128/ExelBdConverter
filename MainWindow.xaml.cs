@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
@@ -14,16 +13,12 @@ namespace ExelBdConverter;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private List<KeyValuePair<string, string>> fileHistory = new List<KeyValuePair<string, string>>(); //Словарь для хранения истории. Ключ - имя файла, значение - путь
-    private const int MaxHistorySize = 10; // Ограничение для списка открытых файлов
-    ProccPy tableview; // Объект процесса питон
+    private List<string> fileHistory = new List<string>(); // Список для хранения истории
+    ProccPy tableview;
     public MainWindow()
     {
         InitializeComponent();
     }
-
-    //Buttons
-
     public void OpenTableClick(Object sender, RoutedEventArgs args)
     {
         OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -43,55 +38,18 @@ public partial class MainWindow : Window
         }
     }
 
-    // DeepFunctions
-
-    // Для получения информации из потока используется подобная функция
-
-    // Описание самой функции, которая всякий раз будет активироваться когда процесс выдает значение
-
-    //private void testProcess(ProccPy procc)
-    //{
-    //    procc.ThrowaCommandDataResp("Commad/Flag$"+args/data) // на 
-    //    EventHandler<string> eventhandlex = null;                 // задание пустой лямбда-функции
-    //    eventhandlex = (s, e) => {                                // для отлавливания значения, рекомендуется использовать лямбда функцию такого вида
-    //        response = e;                                         // В качестве значения работы процесса исользуется в данном случае аргумент e
-    //        string[] gotresp = response.Split('$');
-    //        if (gotresp.Length == 2)
-    //        {
-    //            if (gotresp[0] == "Debug")                        // Функция всегда возвращает флаг, который был подан в начале аргумента команды с разделителем '$'
-    //            {
-    //                Debug.WriteLine(response);
-    //                procc.GotAnswer -= eventhandlex;              // В обязательном порядке, требуется добавить в конец лямбда функции, её отписку от события
-    //            }
-    //        }
-    //    };
-    //    Debug.WriteLine("StartedTestResp");
-    //    procc.GotAnswer += eventhandlex;
-    //}
-
     // Функция для добавления файла в историю
     private void AddFileToHistory(string filePath)
     {
         // Получение названия файла
         string fileName = Path.GetFileName(filePath);
 
-        // Удаляем дубликаты
-        fileHistory.RemoveAll(x => x.Key == fileName);
-
         // Добавление в начало списка
-        fileHistory.Insert(0, new KeyValuePair<string, string>(fileName, filePath));
+        fileHistory.Insert(0, fileName);
 
-        // Ограничиваем размер истории
-        if (fileHistory.Count > MaxHistorySize)
-        {
-            fileHistory.RemoveAt(MaxHistorySize);
-        }
-
-        //Обновление ListBox
+        // Обновление ListBox
         UpdateHistoryListBox();
     }
-    
-    
 
     // Функция для обновления ListBox
     private void UpdateHistoryListBox()
@@ -100,9 +58,9 @@ public partial class MainWindow : Window
         HistoryListBox.Items.Clear();
 
         // Добавить все файлы из истории
-        foreach (var item in fileHistory)  // Перебор KeyValuePair
+        foreach (string fileName in fileHistory)
         {
-            HistoryListBox.Items.Add(item.Key);  // Берем только ключ (имя файла)
+            HistoryListBox.Items.Add(fileName);
         }
     }
 
@@ -127,41 +85,117 @@ public partial class MainWindow : Window
         // процесс настроен так, что необходимо при работе с ним в первую
         // очередь запускать метод ThrowStartDataInProcc(),
         // в котором он запомнит адресс файла с которым работает
-        tableview = new ProccPy(@"pytableplot.py", "SetFILE$" + table_path);
-        testProcess(tableview);
+        tableview = new ProccPy(@"pytableplot.py", "FILE=" + table_path);
+        MessageBox.Show(testProcess(tableview));
         excelpro.Exited += (s, e) =>
         {
             tableview.Close();
-            Debug.WriteLine("closed");
+            MessageBox.Show("Вышел");
         };
     }
 
-    private void HistoryListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (HistoryListBox.SelectedIndex >= 0)
-        {
-            var selectedItem = fileHistory[HistoryListBox.SelectedIndex];
-            OpenTableProcess(selectedItem.Value);  // Используем Value (полный путь)
-        }
+        //В будущем будет реализован выбор элементов
     }
 
-    private void testProcess(ProccPy procc)
+    private string testProcess(ProccPy procc)
     {
-        procc.ChecProcc();
-        EventHandler<string> eventhandlex = null;
-        eventhandlex = (s, e) => {
-            string response = e;
-            string[] gotresp = response.Split('$');
-            if (gotresp.Length == 2)
+        string response = procc.ChecProcc();
+        return response;
+
+    }
+
+    // Процесс потока Питона - при создании Запускает в качестве нового процесса файл питона, казанный в конструкторе
+    // для взаимодействия с процессом использовать функцию ThrowaCommandDataResp -
+    // в качестве аргуемнта - команда с данными,
+    // а в качестве возвращаемого значения - вывод процесса
+    class ProccPy
+    {
+        private StreamWriter stdin;
+        private StreamReader stdout;
+        Process pysubproc;
+        public void Close()
+        {
+            stdin.Close();
+            stdout.Close();
+            pysubproc.CancelErrorRead();
+            pysubproc.Close();
+        }
+        public ProccPy(string path, string start_data)
+        {
+            
+            pysubproc = new Process();
+            pysubproc.StartInfo = new ProcessStartInfo()
             {
-                if (gotresp[0] == "Debug")
+                FileName = @"python-3.13.7-embed-amd64\python.exe",
+                Arguments = $"\"{path}\"",
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+                WorkingDirectory = @"PythonSubProg"
+            };
+            pysubproc.Start();
+            pysubproc.BeginErrorReadLine();
+            Debug.WriteLine("processstarted");
+            stdin = pysubproc.StandardInput;
+            stdout = pysubproc.StandardOutput;
+            pysubproc.ErrorDataReceived += (s, e) => {
+                if (!string.IsNullOrEmpty(e.Data))
+                    Debug.WriteLine($"Python ERR: {e.Data}");
+            };
+            pysubproc.Exited += (s, e) =>
+            {
+                Debug.WriteLine("Nah, I'm done here, good luck");
+            };
+            this.ThrowStartDataInProcc(start_data);
+        }
+        ~ProccPy() {
+            this.Close();
+        }
+        public void ThrowStartDataInProcc(string data)
+        {
+            stdin.WriteLine(data);
+            stdin.Flush();
+        }
+        public string ThrowaCommandDataResp(string command, string data)
+        {
+            stdin.WriteLine(command + ":" + data);
+            stdin.Flush();
+            string? output = stdout.ReadLine();
+            if (output != null)
+            {
+                return output;
+            }
+            else
+            {
+                return "null";
+            }
+        }
+        public string ChecProcc()
+        {
+            stdin.WriteLine("CHECK!");
+            stdin.Flush();
+            
+            try
+            {
+                string? output = stdout.ReadLine();
+                Debug.WriteLine("output" + output);
+                if (output!=null)
                 {
-                    Debug.WriteLine(gotresp[1]);
-                    procc.GotAnswer -= eventhandlex;
+                    return output;
+                }
+                else
+                {
+                    return "null";
                 }
             }
-        };
-        Debug.WriteLine("StartedTestResp");
-        procc.GotAnswer += eventhandlex;
-    }    
+            catch
+            {
+                return "Oh, no!";
+            }
+        }
+    }
 }
