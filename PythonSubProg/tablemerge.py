@@ -80,22 +80,3 @@ def merge_tables(table1, table2):
     return merged_table
 
 
-
-#тест и красивый вывод    
-'''
-table1 = [
-    ['A', 1, "Sasha", 'student'],
-    ['B', 1, "Andrey", 'manager'],
-    ['E', 1, "Petya", 'worker']]
-
-table2 = [
-    ['A', 1, "Pasha", 'student']]          
-
-new_table = merge_tables(table1, table2)
-if new_table != None:
-    print("Merge table:")
-    for t in new_table:
-        print(t)
-else:
-    print("Tables cannot be merged")
-'''

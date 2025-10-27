@@ -2,6 +2,8 @@
 
 import json
 
+from numpy import diff
+
 #основная функция
 def tables_differences(prev_table, curr_table, switch):
     
@@ -40,12 +42,15 @@ def tables_differences(prev_table, curr_table, switch):
         differences["deleted information"][deleted_keys] = f"(value: {value}, formula: {formula})"    
 
     if switch == True:
-        print("--------------------------------- NUMBER OF CHANGES --------------------------------")
+        print("                                                       ")
+        print("---- NUMBER OF CHANGES ----")
         print(f"Changes found: {len(differences['changed information'])}")
         print(f"Newly added found: {len(differences['newly added information'])}")
         print(f"Deleted found: {len(differences['deleted information'])}")
-        print("----------------------------------------------------------------------------")
+
+    print(json.dumps(differences, indent=2))
 
     #преобразуем наш словарь в JSON-строку
     return json.dumps(differences, indent=2)
+    
 
