@@ -80,6 +80,7 @@ def merge_tables(table1, table2):
     return merged_table
 
 
+
 #тест и красивый вывод    
 '''
 table1 = [
