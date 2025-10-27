@@ -151,13 +151,16 @@ public partial class MainWindow : Window
         EventHandler<string> eventhandlex = null;
         eventhandlex = (s, e) => {
             string response = e;
-            string[] gotresp = response.Split('$');
-            if (gotresp.Length == 2)
+            if (response != null)
             {
-                if (gotresp[0] == "Debug")
+                string[] gotresp = response.Split('$');
+                if (gotresp.Length == 2)
                 {
-                    Debug.WriteLine(gotresp[1]);
-                    procc.GotAnswer -= eventhandlex;
+                    if (gotresp[0] == "Debug")
+                    {
+                        Debug.WriteLine(gotresp[1]);
+                        procc.GotAnswer -= eventhandlex;
+                    }
                 }
             }
         };

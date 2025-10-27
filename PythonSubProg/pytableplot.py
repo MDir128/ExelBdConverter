@@ -2,7 +2,7 @@ import sys, os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, script_dir)
 from tabledifffun import *
-##from XlsArrayer import *
+from XlsArrayer import *
 def main():
     ##!!!!
     ## В print() всегда возвращаем flag+'$'+(ответ), если на вход был флаг (а он должен быть ВСЕГДА!)
