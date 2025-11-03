@@ -7,4 +7,5 @@
 /.vs
 *.sln
 *.csproj.user
-/pytableplot.dist/*
+*/pytableplot.dist/*
+/venv
