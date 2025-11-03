@@ -31,17 +31,19 @@ namespace ExelBdConverter
         {
             //конфигурация процесса
             pysubproc = new Process();
-            pysubproc.StartInfo = new ProcessStartInfo()
+            ProcessStartInfo StartInfo = new ProcessStartInfo()
             {
-                FileName = @"python-3.13.7-embed-amd64\python.exe",
-                Arguments = $"\"{path}\"",
+                //FileName = @"python-3.13.7-embed-amd64\python.exe",
+                //Arguments = $"\"{path}\"",
+                FileName = path,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true,
                 UseShellExecute = false,
-                WorkingDirectory = @"PythonSubProg"
+                //WorkingDirectory = @"PythonSubProg"
             };
+            pysubproc.StartInfo = StartInfo;
             pysubproc.Start(); //запуск процесса
             pysubproc.BeginErrorReadLine(); //покдключение потока ошибок
             Debug.WriteLine("processstarted");
