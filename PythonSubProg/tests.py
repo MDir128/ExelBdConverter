@@ -32,7 +32,7 @@ print("                                    �
 table1 = [
     ['A', 1, "Sasha", 'student'],
     ['B', 1, "Andrey", 'manager'],
-    ['E', 1, "Petya", 'worker']]
+    ['AZ', 1, "Petya", 'worker']]
 
 table2 = [
     ['A', 1, "Pasha", 'student']]          
