@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="PythonSubProg\pytableplot.exe">
+    <None Update="PythonSubProg\main.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="PythonSubProg\pytableplot.py">
