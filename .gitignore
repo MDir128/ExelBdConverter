@@ -9,3 +9,4 @@
 *.csproj.user
 */pytableplot.dist/*
 /venv
+/PythonSubProg/Dockerfile
