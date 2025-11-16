@@ -22,27 +22,6 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    //Buttons
-
-    public void OpenTableClick(Object sender, RoutedEventArgs args)
-    {
-        OpenFileDialog openFileDialog = new OpenFileDialog();
-        openFileDialog.Filter = "Таблицы (*.xls;*.xlsx)|*.xls;*.xlsx";
-        bool? gotcha = openFileDialog.ShowDialog();
-        string path = openFileDialog.FileName;
-        if (gotcha == true)
-        {
-            try
-            {
-                AddFileToHistory(path); // Добавляем файл в историю
-
-                Console.WriteLine("start table");
-                OpenTableProcess(path);
-            }
-            catch { }
-        }
-    }
-
     // DeepFunctions
 
     // Для получения информации из потока используется подобная функция
@@ -68,6 +47,27 @@ public partial class MainWindow : Window
     //    Debug.WriteLine("StartedTestResp");
     //    procc.GotAnswer += eventhandlex;
     //}
+
+    //Buttons
+
+    public void OpenTableClick(Object sender, RoutedEventArgs args)
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "Таблицы (*.xls;*.xlsx)|*.xls;*.xlsx";
+        bool? gotcha = openFileDialog.ShowDialog();
+        string path = openFileDialog.FileName;
+        if (gotcha == true)
+        {
+            try
+            {
+                AddFileToHistory(path); // Добавляем файл в историю
+
+                Console.WriteLine("start table");
+                OpenTableProcess(path);
+            }
+            catch { }
+        }
+    }
 
     // Функция для добавления файла в историю
     private void AddFileToHistory(string filePath)
@@ -105,6 +105,48 @@ public partial class MainWindow : Window
             HistoryListBox.Items.Add(item.Key);  // Берем только ключ (имя файла)
         }
     }
+
+    // Кнопка объединения таблиц
+    public void MergeTablesClick(Object sender, RoutedEventArgs args)
+    {
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "Таблицы (*.xls;*.xlsx)|*.xls;*.xlsx";
+        openFileDialog.Multiselect = true; // Разрешаем множественный выбор
+        openFileDialog.Title = "Выберите две таблицы для объединения";
+
+        bool? gotcha = openFileDialog.ShowDialog();
+
+        if (gotcha == true && openFileDialog.FileNames.Length == 2)
+        {
+            string[] selectedFiles = openFileDialog.FileNames;
+            string firstTablePath = selectedFiles[0];
+            string secondTablePath = selectedFiles[1];
+
+            try
+            {
+                // Добавляем файлы в историю
+                AddFileToHistory(firstTablePath);
+                AddFileToHistory(secondTablePath);
+
+                // Вызываем процесс объединения
+                MergeTablesProcess(firstTablePath, secondTablePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при объединении таблиц: {ex.Message}", "Ошибка",
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        else if (gotcha == true && openFileDialog.FileNames.Length != 2)
+        {
+            MessageBox.Show("НАДО ВЫБИРАТЬ ДВА ФАЙЛА!!11!!11",
+                           "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+    }
+    public void MergeTablesProcess(string firstTablePath, string secondTablePath)
+    {
+    }
+
 
     // Функция для кнопки "Очистить историю"
     private void ClearHistoryClick(object sender, RoutedEventArgs e)

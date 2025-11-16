@@ -31,13 +31,14 @@
 		<TabControl Margin="15,1,15,48" Grid.RowSpan="2" Grid.Row="1">
 			<TabItem Header="Инструменты" Background="#61D8A2">
 				<Grid Background="#36D88E">
-					<Button Content="Открыть файл" HorizontalAlignment="Left" Margin="10,10,0,0"
+                    <Button Content="Открыть файл" HorizontalAlignment="Left" Margin="10,10,0,0"
                             VerticalAlignment="Top" Width="84" Click="OpenTableClick"
                             Background="#61D8A2" BorderThickness="1" BorderBrush="White"/>
-					<Button Content="Открыть файл" HorizontalAlignment="Left" Margin="10,10,0,0"
-                        VerticalAlignment="Top" Width="84" Click="OpenTableClick"
-                        Background="#61D8A2" BorderThickness="1" BorderBrush="White"/>
-				</Grid>
+                    <Button Content="Объединить" HorizontalAlignment="Left" Margin="10,46,0,0"
+        VerticalAlignment="Top" Width="84" Click="MergeTablesClick"
+        Background="#61D8A2" BorderThickness="1" BorderBrush="White"/>
+
+                </Grid>
 			</TabItem>
 			<TabItem Header="Логи" Background="#61D8A2">
 				<Grid Background="#36D88E"/>
