@@ -68,9 +68,18 @@ namespace ExelBdConverter
         // метод закрытия потоков ввода-вывода
         public void Close()
         {
-            stdin.Close();
-            stdout.Close();
-            pysubproc.Close();
+            if (stdin != null)
+            {
+                stdin.Close();
+            }
+            if (stdout != null)
+            {
+                stdout.Close();
+            }
+            if (pysubproc != null)
+            {
+                pysubproc.Close();
+            }
         }
         // часть класса для обмена данных с процессом
 
