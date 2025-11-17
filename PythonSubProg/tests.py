@@ -30,12 +30,13 @@ print("\n==============================================================\n")
 print("-" * 45 + "TableMergeTest" + "-" * 45)
 print("                                                       ")
 table1 = [
-    ['A', 1, "Sasha", 'student'],
+    ['A', 1, "Pasha", 'student'],
     ['B', 1, "Andrey", 'manager'],
     ['AZ', 1, "Petya", 'worker']]
 
 table2 = [
-    ['A', 1, "Pasha", 'student']]          
+    ['A', 1, "Boris", 'teacher'],
+    ['B', 1, "Andrey", 'student']]          
 
 new_table = merge_tables(table1, table2)
 if new_table != None:
