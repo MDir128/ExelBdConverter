@@ -169,7 +169,7 @@ public partial class MainWindow : Window
         // процесс настроен так, что необходимо при работе с ним в первую
         // очередь запускать метод ThrowStartDataInProcc(),
         // в котором он запомнит адресс файла с которым работает
-        tableview = new ProccPy(@"PythonSubProg\main.exe", "SetFILE$" + table_path);
+        tableview = new ProccPy(@"PythonSubProg\main.bin", "SetFILE$" + table_path);
         testProcess(tableview);
         excelpro.Exited += (s, e) =>
         {

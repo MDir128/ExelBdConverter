@@ -17,15 +17,15 @@ def main():
             line = splitedline[1]
         if flag=='SetFILE': 
             filename = line
-        ##elif line == "SAVE!":
-        ##    SavedTable = ''
-        ##    SavedTable = XlsArrayerOut(filename)
-        ##    print ("saved", SavedTable, flush=True)
-        ##elif line == "COMPARE!":
-        ##    if SavedTable == '':
-        ##        print("no saved previous result(nothing to compare)", flush=True)
-        ##    else:
-        ##        print(tables_differences(SavedTable, XlsArrayerOut(filename), False), flush=True) #настроен на печать вывода 
+        elif line == "SAVE!":
+           SavedTable = ''
+           SavedTable = XlsArrayerOut(filename)
+           print ("saved", SavedTable, flush=True)
+        elif line == "COMPARE!":
+           if SavedTable == '':
+               print("no saved previous result(nothing to compare)", flush=True)
+           else:
+               print(tables_differences(SavedTable, XlsArrayerOut(filename), False), flush=True) #настроен на печать вывода 
         elif flag=='Debug' and line == "CHECK!":
             i = 0
             n = 1
