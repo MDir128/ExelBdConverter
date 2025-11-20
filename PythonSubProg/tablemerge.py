@@ -16,10 +16,8 @@ def common_elements(table1, table2):
             if znach != '' and znach in uniq_elems:
                 flag = True
                 break
-        break
     #если совпадений не найдено
     return flag
-
 
 #функция для продолжения нумерации ячеек 
 def id_cont(cell_id):
@@ -46,10 +44,9 @@ def id_cont(cell_id):
     next_chislo = curr_chislo + 1 #номер следующей ячейки от заданной
     return chislo_newid(next_chislo) #id этой следующей
     
-
 #функция для переиндексации ячеек в таблице
 def reindex_id(table, start_cell_id):
-    if table == None:
+    if table == None or table == []:
         return []
     reindex_table = []
     curr_cell_id = start_cell_id #назначение текущей ячейки
@@ -59,10 +56,9 @@ def reindex_id(table, start_cell_id):
         curr_cell_id = id_cont(curr_cell_id) #получение следующего id следующей ячейки
     return reindex_table
 
-
 #функция для нахождения последней ячейки (по букве)
 def get_maxid(table):
-    if table == None:
+    if table == None or table == []:
         return None
     #для правильного определения большего идентификатора
     def id_chislo(id_stroka):
@@ -80,8 +76,7 @@ def get_maxid(table):
             maxid_chislo = cell_value
     return maxid_stroka
 
-
-#функция для обработки исключений
+#функция для обработки исключений (таблицы не заданы)
 def exception_process(table1, table2):
     if table1 == None and table2 == None:
         print("Both tables are None")
@@ -91,20 +86,37 @@ def exception_process(table1, table2):
         return table1
     if table1 == None and table2 != None:
         print("Table #1 is None. Return table #2")
+        return table2   
+
+#функция для обработки исключений (пустые таблицы)
+def emptytable_process(table1, table2):
+    if table1 == [] and table2 == []:
+        print("Both tables are empty")
+        return None
+    if table1 == []:
+        print("Only table #1 is empty")
         return table2
+    if table2 == []:
+        print("Only table #2 is empty")
+        return table1
 
 #функция объединения двух таблиц на основе общих данных
 def merge_tables(table1, table2):
+    #проверка исключений (пустые таблицы)
+    emptytable_process_result = emptytable_process(table1, table2)
+    if emptytable_process_result != None:
+        return emptytable_process_result
+    
+    #проверка исключений (незаданные таблицы)
+    exception_result = exception_process(table1, table2)
+    if exception_result != None:
+        return exception_result
+
     #проверка на общие элементы
     flag_common = common_elements(table1, table2)
     if flag_common == False:
         print("There is no shared data")
         return None
-
-    #проверка исключений
-    exception_result = exception_process(table1, table2)
-    if exception_result != None:
-        return exception_result
 
     last_table1_id = get_maxid(table1) #выделение последней ячейки первой таблицы
     start_cell_id = id_cont(last_table1_id)
@@ -113,7 +125,3 @@ def merge_tables(table1, table2):
     merged_table = table1 + reindex_table2
     return merged_table
     
-
-    
-
-
