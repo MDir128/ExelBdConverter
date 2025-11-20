@@ -3,11 +3,23 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, script_dir)
 from tabledifffun import *
 from XlsArrayer import *
+from tablemerge import *
+
+Table = ''
+filename = ''
+
+def Xlsout(): # мне было проще переписать это в def чем дважды писать одно и то же, но да я насрал глобальными переменными
+    global Table
+    global filename
+    Table = XlsArrayerOut(filename)
+    return
+
 def main():
     ##!!!!
     ## В print() всегда возвращаем flag+'$'+(ответ), если на вход был флаг (а он должен быть ВСЕГДА!)
     ##!!!!
-    filename = ""
+    Merged = ''
+    global filename
     while True:
         line = sys.stdin.readline().strip() # чтение строки
         splitedline = line.split("$")
@@ -17,15 +29,26 @@ def main():
             line = splitedline[1]
         if flag=='SetFILE': 
             filename = line
-        ##elif line == "SAVE!":
-        ##    SavedTable = ''
-        ##    SavedTable = XlsArrayerOut(filename)
-        ##    print ("saved", SavedTable, flush=True)
-        ##elif line == "COMPARE!":
-        ##    if SavedTable == '':
-        ##        print("no saved previous result(nothing to compare)", flush=True)
-        ##    else:
-        ##        print(tables_differences(SavedTable, XlsArrayerOut(filename), False), flush=True) #настроен на печать вывода 
+        if line == "merge": # def merge_tables(table1, table2):
+            err_list = '' 
+            if Table == '': err_list += 'NO CURRENT TABLE'
+            elif SavedTable == '': err_list += 'NO SAVED TABLE'
+            else: 
+                print('merging of saved and current tables')
+                Merged = merge_tables(Table, SavedTable)
+                print('Merge ended')
+            
+
+            if err_list != '': print('merge is not allowed, there is no:', *err_list)
+        if line == "SAVE!":
+            Xlsout()
+            SavedTable = Table
+            print ("saved", SavedTable, flush=True)
+        if line == "COMPARE!":
+            if SavedTable == '':
+                print("no saved previous result(nothing to compare)", flush=True)
+            else:
+                print(tables_differences(SavedTable, XlsArrayerOut(filename), False), flush=True) #настроен на печать вывода 
         elif flag=='Debug' and line == "CHECK!":
             i = 0
             n = 1
@@ -37,5 +60,6 @@ def main():
             print (flag+'$'+filename, n, flush=True)
         else:
             print(flag+'$'+"uncknown command", flush=True)
+        Table = ''
 if __name__ == "__main__":
     main()
