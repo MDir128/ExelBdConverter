@@ -24,3 +24,7 @@ docker cp tempcontainer:/Ducker/PythonSubProg/main.bin ./main.bin
 docker rm tempcontainer
 
 !!!! заПуллить Докер: docker pull stopich1/exelbdconverter:latest !!!!
+
+
+НОВЫЙ СПОСОБ. ПОПРОБУЙТЕ ЗАРАНИТЬ buildPython.ps1 в power shell в теории да.
+вероятно надо не в power shell а в докере в его внтуренней cmd
