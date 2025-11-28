@@ -59,6 +59,4 @@ table2 = [
     ['A', 1, "Boris", 'teacher'],
     ['B', 1, "Andrey", 'student']]          
 
-hat1 = HatHunter(table1)
-hat2 = HatHunter(table2)
-print(HatCheker(hat1, hat2))
+print(HatCheker(table1, table2))

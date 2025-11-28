@@ -8,6 +8,9 @@ def HatHunter(table):
     return Hat
 
 def HatCheker(hat1, hat2):
+    
+    hat1 = HatHunter(hat1)
+    hat2 = HatHunter(hat2)
     matches = []
 
     for i in range(len(hat1)):
