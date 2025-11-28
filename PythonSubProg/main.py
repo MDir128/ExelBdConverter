@@ -29,24 +29,24 @@ def main():
             line = splitedline[1]
         if flag=='SetFILE': 
             filename = line
-        if line == "merge": # def merge_tables(table1, table2):
+        if line == "MERGE!": # def merge_tables(table1, table2):
             err_list = '' 
             if Table == '': err_list += 'NO CURRENT TABLE'
             elif SavedTable == '': err_list += 'NO SAVED TABLE'
             else: 
                 print('merging of saved and current tables')
                 Merged = merge_tables(Table, SavedTable)
-                print('Merge ended')
+                print('Merge ended', flush=True)
             
 
-            if err_list != '': print('merge is not allowed, there is no:', *err_list)
-        if line == "SAVE!":
-            Xlsout()
-            SavedTable = Table
-            print ("saved", SavedTable, flush=True)
+            if err_list != '': print('merge is not allowed, there is no:', *err_list, flag+'$'+filename, flush=True)
+        # if line == "SAVE!" and :
+        #     Xlsout()
+        #     SavedTable = Table
+        #     print ("saved", SavedTable, flag+'$'+filename, flush=True)
         if line == "COMPARE!":
             if SavedTable == '':
-                print("no saved previous result(nothing to compare)", flush=True)
+                print("no saved previous result(nothing to compare)",flag+'$'+filename, flush=True)
             else:
                 print(tables_differences(SavedTable, XlsArrayerOut(filename), False), flush=True) #настроен на печать вывода 
         elif flag=='Debug' and line == "CHECK!":

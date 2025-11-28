@@ -1,4 +1,28 @@
-﻿#функция объединения двух таблиц на основе общих данных
+﻿# info.append([letter, number, value, formula])
+
+def HatHunter(table):
+    Hat=[]
+    for box in table:
+        if box[1] == 1:
+            Hat.append([box[0], box[2]]) # letter and value. number always 1 and we dont care about formula 
+    return Hat
+
+def HatCheker(hat1, hat2):
+    matches = []
+
+    for i in range(len(hat1)):
+        ha=hat1[i]
+        a=ha[1]
+        for x in range(len(hat2)):
+            hb = hat2[x]
+            b = hb[1]
+            if a == b:
+                matches.append([ha[0], hb[0]])
+
+    return matches
+
+
+#функция объединения двух таблиц на основе общих данных
 def merge_tables(table1, table2):
     #проверка на общие элементы
     flag_common = common_elements(table1, table2)
@@ -112,7 +136,3 @@ def exception_process(table1, table2):
     if table1 == None and table2 != None:
         print("Table #1 is None. Return table #2")
         return table2
-
-
-
-

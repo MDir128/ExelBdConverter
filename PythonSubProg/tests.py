@@ -45,3 +45,20 @@ if new_table != None:
         print(t)
 else:
     print("Tables cannot be merged")
+
+#--------------------------------- ТЕСТ HatHunter ФУНКЦИИ --------------------------------
+
+print("-" * 45 + "HatHunterTest" + "-" * 45)
+print("                                                       ")
+table1 = [
+    ['A', 1, "Pasha", 'student'],
+    ['B', 1, "Andrey", 'manager'],
+    ['AZ', 1, "Petya", 'worker']]
+
+table2 = [
+    ['A', 1, "Boris", 'teacher'],
+    ['B', 1, "Andrey", 'student']]          
+
+hat1 = HatHunter(table1)
+hat2 = HatHunter(table2)
+print(HatCheker(hat1, hat2))
