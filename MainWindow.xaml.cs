@@ -145,6 +145,61 @@ public partial class MainWindow : Window
     }
     public void MergeTablesProcess(string firstTablePath, string secondTablePath)
     {
+        // Создаем процесс для работы с таблицами
+        tableview = new ProccPy(@"PythonSubProg\main.exe", "SetFILE$" + firstTablePath);
+
+        // Создаем обработчик события для получения ответа от процесса
+        EventHandler<string> mergeEventHandler = null;
+        mergeEventHandler = (s, e) => {
+            string response = e;
+            if (response != null)
+            {
+                string[] gotresp = response.Split('$');
+                if (gotresp.Length == 2)
+                {
+                    if (gotresp[0] == "Debug")
+                    {
+                        // Получили отладочную информацию
+                        Debug.WriteLine(gotresp[1]);
+                        tableview.GotAnswer -= mergeEventHandler;
+                    }
+                    else if (gotresp[0] == "MERGE!")
+                    {
+                        // Обрабатываем результат объединения
+                        if (gotresp[1].Contains("merge is not allowed"))
+                        {
+                            MessageBox.Show($"Ошибка объединения: {gotresp[1]}", "Ошибка",
+                                          MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        else if (gotresp[1].Contains("Merge ended"))
+                        {
+                            MessageBox.Show("Таблицы успешно объединены!", "Успех",
+                                          MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                        tableview.GotAnswer -= mergeEventHandler;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Неизвестный ответ: " + response);
+                        tableview.GotAnswer -= mergeEventHandler;
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine("Непредвиденный ответ: " + response);
+                    tableview.GotAnswer -= mergeEventHandler;
+                }
+            }
+        };
+
+        // Подписываемся на событие получения ответа
+        tableview.GotAnswer += mergeEventHandler;
+
+        // Отправляем команду на объединение таблиц
+        // Формат команды: "MERGE!$путь_к_второй_таблице"
+        tableview.ThrowaCommandDataResp($"MERGE!${secondTablePath}", null);
+
+        Debug.WriteLine("Запущен процесс объединения таблиц");
     }
 
 
