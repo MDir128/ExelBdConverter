@@ -178,16 +178,10 @@ public partial class MainWindow : Window
                         }
                         tableview.GotAnswer -= mergeEventHandler;
                     }
-                    else
-                    {
-                        Debug.WriteLine("Неизвестный ответ: " + response);
-                        tableview.GotAnswer -= mergeEventHandler;
-                    }
                 }
                 else
                 {
                     Debug.WriteLine("Непредвиденный ответ: " + response);
-                    tableview.GotAnswer -= mergeEventHandler;
                 }
             }
         };
