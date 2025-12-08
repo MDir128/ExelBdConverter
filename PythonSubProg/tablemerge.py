@@ -1,18 +1,19 @@
-﻿# info.append([letter, number, value, formula])
-
-def HatHunter(table):
-    Hat=[]
+﻿def HatHunter(table):
+    Hat = []
     for box in table:
         if box[1] == 1:
-            Hat.append([box[0], box[2]]) # letter and value. number always 1 and we dont care about formula 
+            curr_id = box[0]
+            for i in range(2, len(box)):
+                header_value = box[i]
+                if header_value != None:
+                    Hat.append([curr_id, header_value]) #исправлена ошибка, где все заголовки получали одинаковую букву в id — "A"
+                    curr_id = id_cont(curr_id) #теперь для следующего заголовка будет генерироваться следующая буква, то есть "B"
     return Hat
 
-def HatCheker(hat1, hat2):
-    
+def HatChecker(hat1, hat2):
     hat1 = HatHunter(hat1)
     hat2 = HatHunter(hat2)
     matches = []
-
     for i in range(len(hat1)):
         ha=hat1[i]
         a=ha[1]
@@ -21,15 +22,13 @@ def HatCheker(hat1, hat2):
             b = hb[1]
             if a == b:
                 matches.append([ha[0], hb[0]])
-
     return matches
-
 
 #функция объединения двух таблиц на основе общих данных
 def merge_tables(table1, table2):
     #проверка на общие элементы
-    flag_common = common_elements(table1, table2)
-    if flag_common == False:
+    flag_common = HatChecker(table1, table2)
+    if not flag_common:
         print("There is no shared data")
         return None
 
@@ -37,35 +36,106 @@ def merge_tables(table1, table2):
     exception_result = exception_process(table1, table2)
     if exception_result != None:
         return exception_result
-
-    last_table1_id = get_maxid(table1) #выделение последней ячейки первой таблицы
-    start_cell_id = id_cont(last_table1_id)
-    reindex_table2 = reindex_id(table2, start_cell_id) #новая переиндексированная вторая таблица
-
-    merged_table = table1 + reindex_table2
+    all_headers = select_headers(table1, table2) #сначала нужно получать словарь всех заголовков
+    merged_table = create_newtable(table1, table2, all_headers) #потом уже создавать новую таблицу
     return merged_table
-    
-#функция для нахождения общих элементов
-def common_elements(table1, table2):
-    uniq_elems = set() #множество для уникальных элементов
-    flag = False
-    #проверка на наличие общих элементов в первой таблице
-    for cell in table1:
-        for i in range(2, len(cell)): #нельзя учитывать имя ячейки
-            znach = cell[i]
-            if znach != '': #проверка на то, чтобы не было пустых ячеек
-                uniq_elems.add(znach)
+   
+#функция для выделения всех заголовков в шапке в один словарь
+def select_headers(table1, table2):
+    headersdict = dict() 
+    for table, table_name in [(table1, "Table 1"), (table2, "Table 2")]: #каждая итерация проходится по каждой таблице
+        alltable_headers = HatHunter(table) 
+        for header_id, header_name in alltable_headers: #теперь каждая итерация по каждому заголовку с его уникальным id
+            #если заголовка ещё нет в словаре
+            if header_name not in headersdict:
+                headersdict[header_name] = {"table1_id": None, "table2_id": None} #пока None, ведь просто создаётся запись — потом None будут заполняться id заголовков с первой таблицы, а потом со второй
+            #если такой заголовок уже есть
+            if table_name == "Table 1":
+                headersdict[header_name]["table1_id"] = header_id
+            else:
+                headersdict[header_name]["table2_id"] = header_id
+    return headersdict #по итогу вернётся словарь, где явно видно, какие заголовки у таблиц общие, а какие нет
+        
+#функция создания новой мёрджнутой таблицы 
+def create_newtable(table1, table2, all_uniq_headers): #принимает на вход словарь заголовков
+    new_table = []
 
-    #проверка на наличие общих элементов во второй таблице
-    for cell in table2:
-        for i in range(2, len(cell)): #нельзя учитывать имя ячейки:
-            znach = cell[i]
-            if znach != '' and znach in uniq_elems:
-                flag = True
-                break
-        break
-    #если совпадений не найдено
-    return flag
+    #заполнение массивов уникальных заголовков
+    uniq_headers1 = [] 
+    uniq_headers2 = []
+    common_headers = []
+    for header, id in all_uniq_headers.items():
+        if id["table1_id"] and id["table2_id"]: #в table1_id и в table2_id хранятся буквенные id
+            common_headers.append(header)
+        elif id["table1_id"] and not id["table2_id"]:
+            uniq_headers1.append(header)
+        elif not id["table1_id"] and id["table2_id"]:
+            uniq_headers2.append(header)
+    all_headers = common_headers + uniq_headers1 + uniq_headers2 #теперь создаётся один общий массив всех заголовков
+
+    #составлене самой шапки
+    curr_id = 'A'
+    for header in all_headers:
+        new_table.append([curr_id, 1, header])
+        curr_id = id_cont(curr_id)
+    #для установки максимального значения переменных по номеру максимальной строки
+    table1_id_header = dict()
+    table2_id_header = dict()
+    for cell in table1: 
+        if cell[1] == 1:
+            for i in range(2, len(cell)):
+                header_name = cell[i]
+                table1_id_header[header_name] = i
+    for cell in table2: 
+        if cell[1] == 1:
+            for i in range(2, len(cell)):
+                header_name = cell[i]
+                table2_id_header[header_name] = i
+    maxstroka_num_table1 = max(cell[1] for cell in table1) #максимальный номер строки в первой таблице
+    maxstroka_num_table2 = max(cell[1] for cell in table2)
+
+    #добавление строк из первой таблицы
+    for stroka_num in range(2, maxstroka_num_table1 + 1):
+        all_cells = []
+        for cell in table1:
+            if cell[1] == stroka_num:
+                all_cells.append(cell)
+        string_elements = dict()
+        for cell in all_cells:
+            for i in range(2, len(cell)):
+                for header_name, header_id in table1_id_header.items():
+                    if header_id == i:
+                        cell_value = cell[i] if i < len(cell) else '' #проверка, чтобы не ввышло из диапазона
+                        string_elements[header_name] = cell_value
+                        break
+        curr_id = 'A'
+        for header in all_headers:
+            cell_value = string_elements.get(header, '')
+            new_table.append([curr_id, stroka_num, cell_value])
+            curr_id = id_cont(curr_id)
+
+    #добавление строк из второй таблицы
+    next_stroka_num = maxstroka_num_table1 + 1
+    for stroka_num in range(2, maxstroka_num_table2 + 1):
+        all_cells = []
+        for cell in table2:
+            if cell[1] == stroka_num:
+                all_cells.append(cell)
+        string_elements = dict()
+        for cell in all_cells:
+            for i in range(2, len(cell)):
+                for header_name, header_id in table2_id_header.items():
+                    if header_id == i:
+                        cell_value = cell[i] if i < len(cell) else '' #проверка, чтобы не ввышло из диапазона
+                        string_elements[header_name] = cell_value
+                        break
+        curr_id = 'A'
+        for header in all_headers:
+            cell_value = string_elements.get(header, '')
+            new_table.append([curr_id, next_stroka_num, cell_value])
+            curr_id = id_cont(curr_id)
+        next_stroka_num += 1
+    return new_table
 
 
 #функция для продолжения нумерации ячеек 
@@ -98,12 +168,12 @@ def id_cont(cell_id):
 def reindex_id(table, start_cell_id):
     if table == None:
         return []
-    reindex_table = []
-    curr_cell_id = start_cell_id #назначение текущей ячейки
+    reindex_table = [] 
+    curr_cell_id = start_cell_id
     for cell in table:
         new_cell = [curr_cell_id] + cell[1:] #заменяется буква у ячейки с сохранением всех остальных данных
         reindex_table.append(new_cell)
-        curr_cell_id = id_cont(curr_cell_id) #получение следующего id следующей ячейки
+        curr_cell_id = id_cont(curr_cell_id)
     return reindex_table
 
 

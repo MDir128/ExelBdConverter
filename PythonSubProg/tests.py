@@ -30,13 +30,14 @@ print("\n==============================================================\n")
 print("-" * 45 + "TableMergeTest" + "-" * 45)
 print("                                                       ")
 table1 = [
-    ['A', 1, "Pasha", 'student'],
-    ['B', 1, "Andrey", 'manager'],
-    ['AZ', 1, "Petya", 'worker']]
+    ['A', 1, "Name", 'Work'],
+    ['B', 2, "Andrey", 'manager'],
+    ['C', 3, "Petya", 'worker']]
 
 table2 = [
-    ['A', 1, "Boris", 'teacher'],
-    ['B', 1, "Andrey", 'student']]          
+    ['A', 1, "Name", 'Work', 'Mark', 'Color'],
+    ['B', 2, "Gosha", 'student', '5', 'red'],
+    ['C', 3, "Vitya", 'student', '5', 'orange']]          
 
 new_table = merge_tables(table1, table2)
 if new_table != None:
@@ -48,15 +49,3 @@ else:
 
 #--------------------------------- ТЕСТ HatHunter ФУНКЦИИ --------------------------------
 
-print("-" * 45 + "HatHunterTest" + "-" * 45)
-print("                                                       ")
-table1 = [
-    ['A', 1, "Pasha", 'student'],
-    ['B', 1, "Andrey", 'manager'],
-    ['AZ', 1, "Petya", 'worker']]
-
-table2 = [
-    ['A', 1, "Boris", 'teacher'],
-    ['B', 1, "Andrey", 'student']]          
-
-print(HatCheker(table1, table2))
