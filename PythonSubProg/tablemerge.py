@@ -76,14 +76,15 @@ def create_newtable(table1, table2, all_uniq_headers): #принимает на 
     #составлене самой шапки
     curr_id = 'A'
     for header in all_headers:
-        new_table.append([curr_id, 1, header])
+        new_table.append([curr_id, 1, header]) #заполнение новой таблицы шапкой
         curr_id = id_cont(curr_id)
-    #для установки максимального значения переменных по номеру максимальной строки
+
+    #заполнение словарей заголовков с их id
     table1_id_header = dict()
     table2_id_header = dict()
     for cell in table1: 
         if cell[1] == 1:
-            for i in range(2, len(cell)):
+            for i in range(2, len(cell)): #индекс 2, потому что 0 — буквенный id ячейки, а 1 — числовой id ячейки
                 header_name = cell[i]
                 table1_id_header[header_name] = i
     for cell in table2: 
@@ -91,32 +92,35 @@ def create_newtable(table1, table2, all_uniq_headers): #принимает на 
             for i in range(2, len(cell)):
                 header_name = cell[i]
                 table2_id_header[header_name] = i
+
     maxstroka_num_table1 = max(cell[1] for cell in table1) #максимальный номер строки в первой таблице
     maxstroka_num_table2 = max(cell[1] for cell in table2)
 
     #добавление строк из первой таблицы
-    for stroka_num in range(2, maxstroka_num_table1 + 1):
+    for stroka_num in range(2, maxstroka_num_table1 + 1): #1 итерация для каждой строки (по её номеру)
+        #нужно собрать все ячейки строки
         all_cells = []
-        for cell in table1:
+        for cell in table1: #находим все ячейки первой строки первой таблицы
             if cell[1] == stroka_num:
                 all_cells.append(cell)
-        string_elements = dict()
-        for cell in all_cells:
-            for i in range(2, len(cell)):
-                for header_name, header_id in table1_id_header.items():
-                    if header_id == i:
+        string_elements = dict() #словарь для хранения значений строки, то есть заголовок: значение
+        for cell in all_cells: #для каждой из ячеек строки
+            for i in range(2, len(cell)): #для каждого из значений строки
+                for header_name, header_id in table1_id_header.items(): 
+                    if header_id == i: #проверка индекса
                         cell_value = cell[i] if i < len(cell) else '' #проверка, чтобы не ввышло из диапазона
-                        string_elements[header_name] = cell_value
+                        string_elements[header_name] = cell_value #сохранение в этот словарь
                         break
+        #создание ячеек для строк в новой таблице 
         curr_id = 'A'
         for header in all_headers:
-            cell_value = string_elements.get(header, '')
-            new_table.append([curr_id, stroka_num, cell_value])
-            curr_id = id_cont(curr_id)
+            cell_value = string_elements.get(header, '') #получаем значения у всех ключей заголовков в словаре
+            new_table.append([curr_id, stroka_num, cell_value]) #теперь всё это формируется в строки и добавляется к уже составленной шапке в новой таблицы
+            curr_id = id_cont(curr_id) #генерация id для следующего столбца
 
     #добавление строк из второй таблицы
     next_stroka_num = maxstroka_num_table1 + 1
-    for stroka_num in range(2, maxstroka_num_table2 + 1):
+    for stroka_num in range(2, maxstroka_num_table2 + 1): #находим все ячейки первой строки второй таблицы
         all_cells = []
         for cell in table2:
             if cell[1] == stroka_num:
@@ -131,7 +135,7 @@ def create_newtable(table1, table2, all_uniq_headers): #принимает на 
                         break
         curr_id = 'A'
         for header in all_headers:
-            cell_value = string_elements.get(header, '')
+            cell_value = string_elements.get(header, '') 
             new_table.append([curr_id, next_stroka_num, cell_value])
             curr_id = id_cont(curr_id)
         next_stroka_num += 1
@@ -140,7 +144,7 @@ def create_newtable(table1, table2, all_uniq_headers): #принимает на 
 
 #функция для продолжения нумерации ячеек 
 def id_cont(cell_id):
-    #если ячкйка пуста — начинаем с первой ячейки A
+    #если ячейка пуста — начинаем с первой ячейки A
     if cell_id == None:
         return 'A'
     '''для определения правильного двузначного и большеидентификатора будет строиться 

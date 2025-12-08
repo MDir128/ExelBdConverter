@@ -35,9 +35,9 @@ table1 = [
     ['C', 3, "Petya", 'worker']]
 
 table2 = [
-    ['A', 1, "Name", 'Work', 'Mark', 'Color'],
-    ['B', 2, "Gosha", 'student', '5', 'red'],
-    ['C', 3, "Vitya", 'student', '5', 'orange']]          
+    ['A', 1, "Name", 'Mark', 'Color'],
+    ['B', 2, "Gosha", '5', 'red'],
+    ['C', 3, "Vitya", '5', 'orange']]          
 
 new_table = merge_tables(table1, table2)
 if new_table != None:
