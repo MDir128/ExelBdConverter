@@ -8,47 +8,66 @@ from tablemerge import *
 Table = ''
 filename = ''
 
-def Xlsout(): # мне было проще переписать это в def чем дважды писать одно и то же, но да я насрал глобальными переменными
+def Xlsout():
     global Table
     global filename
     Table = XlsArrayerOut(filename)
     return
 
 def main():
+
     ##!!!!
     ## В print() всегда возвращаем flag+'$'+(ответ), если на вход был флаг (а он должен быть ВСЕГДА!)
     ##!!!!
-    Merged = ''
+
+    Table2 = '' 
     global filename
     while True:
         line = sys.stdin.readline().strip() # чтение строки
         splitedline = line.split("$")
+
         flag = "none"
         if len(splitedline) == 2:
             flag = splitedline[0]
             line = splitedline[1]
-        if flag=='SetFILE': 
+
+        if flag=='SetFILE1': 
             filename = line
-        if line == "MERGE!": # def merge_tables(table1, table2):
-            err_list = '' 
-            if Table == '': err_list += 'NO CURRENT TABLE'
-            elif SavedTable == '': err_list += 'NO SAVED TABLE'
-            else: 
-                print('merging of saved and current tables')
-                Merged = merge_tables(Table, SavedTable)
-                print('Merge ended', flush=True)
+            filename1 = XlsArrayerOut(filename)
             
 
-            if err_list != '': print('merge is not allowed, there is no:', *err_list, flag+'$'+filename, flush=True)
-        # if line == "SAVE!" and :
-        #     Xlsout()
-        #     SavedTable = Table
-        #     print ("saved", SavedTable, flag+'$'+filename, flush=True)
-        if line == "COMPARE!":
-            if SavedTable == '':
-                print("no saved previous result(nothing to compare)",flag+'$'+filename, flush=True)
+        if flag=='SetFILE2': 
+            filename = line
+            filename2 = XlsArrayerOut(filename)
+
+        if flag == "MERGE!": # def merge_tables(table1, table2):
+
+            err_list = '' 
+            if filename1 == '': err_list += 'NO FILENAME1 (try: "SetFILE1)'
+            elif filename2 == '': err_list += 'NO FILENAME2 (try: "SetFILE2)'
+            
+            if err_list != '': print(flag+ '$' + 'merge is not allowed, there is no:', *err_list, flush=True)
+            else: 
+                print(flag+ '$' + 'merging tables')
+                filename1 = merge_tables(filename1, filename2)
+                print(flag+ '$' + 'Merge ended, file1 changed ', filename1, flush=True)
+            
+        if flag == "COMPARE!":
+
+            err_list = '' 
+            if filename1 == '': err_list += 'NO FILENAME1 (try: "SetFILE1)'
+            elif filename2 == '': err_list += 'NO FILENAME2 (try: "SetFILE2)'
+
+            if err_list != '':
+                print(flag+ '$' + 'compare is not allowed, there is no:', *err_list, flush=True)
             else:
-                print(tables_differences(SavedTable, XlsArrayerOut(filename), False), flush=True) #настроен на печать вывода 
+                print(flag+ '$', tables_differences(filename1, filename2, False), flush=True) #настроен на печать вывода 
+
+        if flag == "SAVE!":
+            file_path = line
+            print(flag+'$'+ ' Saving file1 ' )
+            XlsArrayerOut(filename1, file_path)
+
         elif flag=='Debug' and line == "CHECK!":
             i = 0
             n = 1
