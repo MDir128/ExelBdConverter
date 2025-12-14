@@ -6,16 +6,43 @@ from tablesort import *
 print("-" * 45 + "TableDiffunTest" + "-" * 45)
 print("                                                       ")
 prev_table = [
-    ['A', 1, "Name", 'Age', 'Work'],
-    ['B', 2, "Andrey", 19, 'manager'],
-    ['C', 3, "Petya", 18, 'worker'],
-    ['D', 3, "Sasha", 19, 'director']]
+    ['A', 1, "Name"],
+    ['B', 1, "Age"],
+    ['C', 1, "Work"],
+    ['D', 1, "Color"],
+    ['A', 2, "Andrey"],
+    ['B', 2, 18.5],
+    ['C', 2, 'manager'],
+    ['D', 2, 'red'],
+    ['A', 3, "Petya"],
+    ['B', 3, 18],
+    ['C', 3, 'worker'],
+    ['D', 3, 'yellow'],
+    ['A', 4, "Sasha"],
+    ['B', 4, 19],
+    ['C', 4, 'director'],
+    ['D', 4, 'purple'],
+    ['A', 5, "Pasha"],
+    ['B', 5, 20],
+    ['C', 5, 'agent'],
+    ['D', 5, 'green']]
 
 curr_table = [
-    ['A', 1, "Name", 'Age', 'Work'],
-    ['B', 2, "Andrey", 20, 'manager'],
-    ['D', 3, "Sasha", 19, 'director'],
-    ['H', 3, "Vova", 50, 'boss']]          #новая ячейка
+    ['A', 1, "Name"],
+    ['B', 1, "Age"],
+    ['C', 1, "Work"],
+    ['A', 3, "Petya"],
+    ['B', 3, 18],
+    ['C', 3, 'worker'],
+    ['A', 4, "Sasha"],
+    ['B', 4, 18.5],
+    ['C', 4, 'director'],
+    ['A', 5, "Pasha"],
+    ['B', 5, 20],
+    ['C', 5, 'unkown agent'],
+    ['A', 6, "Gosha"],
+    ['B', 6, 1],
+    ['C', 6, 'boss']]          
 
 print("**** JSON-data ****")
 diff1 = tables_differences(prev_table, curr_table, switch=False)
