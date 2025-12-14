@@ -30,12 +30,12 @@ def merge_tables(table1, table2):
     flag_common = HatChecker(table1, table2)
     if not flag_common:
         raise ValueError("There is no shared data")
-        return None
 
     #проверка исключений
     exception_result = exception_process(table1, table2)
     if exception_result != None:
         return exception_result
+
     all_headers = select_headers(table1, table2) #сначала нужно получать словарь всех заголовков
     merged_table = create_newtable(table1, table2, all_headers) #потом уже создавать новую таблицу
     return merged_table
@@ -84,59 +84,61 @@ def create_newtable(table1, table2, all_uniq_headers): #принимает на 
     table2_id_header = dict()
     for cell in table1: 
         if cell[1] == 1:
+            column_id = cell[0]
             for i in range(2, len(cell)): #индекс 2, потому что 0 — буквенный id ячейки, а 1 — числовой id ячейки
                 header_name = cell[i]
-                table1_id_header[header_name] = i
+                if header_name != None:
+                    table1_id_header[header_name] = column_id
+                    column_id = id_cont(column_id)
     for cell in table2: 
         if cell[1] == 1:
+            column_id = cell[0]
             for i in range(2, len(cell)):
                 header_name = cell[i]
-                table2_id_header[header_name] = i
+                if header_name != None:
+                    table2_id_header[header_name] = column_id
+                    column_id = id_cont(column_id)  
 
     maxstroka_num_table1 = max(cell[1] for cell in table1) #максимальный номер строки в первой таблице
     maxstroka_num_table2 = max(cell[1] for cell in table2)
 
     #добавление строк из первой таблицы
     for stroka_num in range(2, maxstroka_num_table1 + 1): #1 итерация для каждой строки (по её номеру)
+        curr_id = 'A'
         #нужно собрать все ячейки строки
-        all_cells = []
+        all_cells = dict()
         for cell in table1: #находим все ячейки первой строки первой таблицы
             if cell[1] == stroka_num:
-                all_cells.append(cell)
-        string_elements = dict() #словарь для хранения значений строки, то есть заголовок: значение
-        for cell in all_cells: #для каждой из ячеек строки
-            for i in range(2, len(cell)): #для каждого из значений строки
-                for header_name, header_id in table1_id_header.items(): 
-                    if header_id == i: #проверка индекса
-                        cell_value = cell[i] if i < len(cell) else '' #проверка, чтобы не ввышло из диапазона
-                        string_elements[header_name] = cell_value #сохранение в этот словарь
-                        break
-        #создание ячеек для строк в новой таблице 
-        curr_id = 'A'
+                if len(cell) > 2:
+                    all_cells[cell[0]] = cell[2] #установление номера текущей строки
+                else:
+                    all_cells[cell[0]] = ''
         for header in all_headers:
-            cell_value = string_elements.get(header, '') #получаем значения у всех ключей заголовков в словаре
+            cell_value = ''
+            column_id = table1_id_header.get(header) #получаем значения у всех ключей заголовков в словаре
+            if column_id in all_cells and column_id != None:
+                cell_value = all_cells[column_id]
             new_table.append([curr_id, stroka_num, cell_value]) #теперь всё это формируется в строки и добавляется к уже составленной шапке в новой таблицы
-            curr_id = id_cont(curr_id) #генерация id для следующего столбца
+            curr_id = id_cont(curr_id)
 
     #добавление строк из второй таблицы
     next_stroka_num = maxstroka_num_table1 + 1
     for stroka_num in range(2, maxstroka_num_table2 + 1): #находим все ячейки первой строки второй таблицы
-        all_cells = []
-        for cell in table2:
-            if cell[1] == stroka_num:
-                all_cells.append(cell)
-        string_elements = dict()
-        for cell in all_cells:
-            for i in range(2, len(cell)):
-                for header_name, header_id in table2_id_header.items():
-                    if header_id == i:
-                        cell_value = cell[i] if i < len(cell) else '' #проверка, чтобы не ввышло из диапазона
-                        string_elements[header_name] = cell_value
-                        break
         curr_id = 'A'
+        #нужно собрать все ячейки строки
+        all_cells = dict()
+        for cell in table2: #находим все ячейки первой строки первой таблицы
+            if cell[1] == stroka_num:
+                if len(cell) > 2:
+                    all_cells[cell[0]] = cell[2]
+                else:
+                    all_cells[cell[0]] = ''
         for header in all_headers:
-            cell_value = string_elements.get(header, '') 
-            new_table.append([curr_id, next_stroka_num, cell_value])
+            cell_value = ''
+            column_id = table2_id_header.get(header) #получаем значения у всех ключей заголовков в словаре
+            if column_id in all_cells and column_id != None:
+                cell_value = all_cells[column_id]
+            new_table.append([curr_id, stroka_num, cell_value]) #теперь всё это формируется в строки и добавляется к уже составленной шапке в новой таблицы
             curr_id = id_cont(curr_id)
         next_stroka_num += 1
     return new_table

@@ -43,8 +43,8 @@ table1 = [
 
 table2 = [
     ['A', 1, "Name"],
-    ['C', 1, "Color"],
-    ['B', 1, "Age"],
+    ['B', 1, "Color"],
+    ['C', 1, "Age"],
     ['A', 2, "Gosha"],
     ['B', 2, "Red"],
     ['C', 2, 9],
