@@ -2,8 +2,6 @@
 
 import json
 
-from numpy import diff
-
 #основная функция
 def tables_differences(prev_table, curr_table, switch):
     

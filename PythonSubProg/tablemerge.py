@@ -29,7 +29,7 @@ def merge_tables(table1, table2):
     #проверка на общие элементы
     flag_common = HatChecker(table1, table2)
     if not flag_common:
-        print("There is no shared data")
+        raise ValueError("There is no shared data")
         return None
 
     #проверка исключений
@@ -205,7 +205,7 @@ def get_maxid(table):
 #функция для обработки исключений
 def exception_process(table1, table2):
     if table1 == None and table2 == None:
-        print("Both tables are None")
+        raise ValueError("Both tables are None")
         return None
     if table1 != None and table2 == None:
         print("Table #2 is None. Return table #1")
