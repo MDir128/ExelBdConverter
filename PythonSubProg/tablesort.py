@@ -1,16 +1,16 @@
-def sort_table(table, column_name, mode = True): #True — по возрастанию, False — по убыванию
+def sort_table(table, column_name, mode = True): #True пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, False пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	sorted_table = []
 
 	if not table:
 		return table
 
-	headers_dict = dict() #словарь для заголовков и их буквенных индексов
-	headers_cells = [] #список для ячееек заголовков
+	headers_dict = dict() #пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	headers_cells = [] #пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	for cell in table:
-		if cell[1] == 1: #это заголовки
+		if cell[1] == 1: #пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			headers_cells.append(cell)
 			if len(cell) > 2 and cell[2] != None:
-				headers_dict[cell[2]] = cell[0] #каждому заголовку устанавливается в качестве значения его буквенный индекс
+				headers_dict[cell[2]] = cell[0] #пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	if column_name not in headers_dict:
 		raise ValueError("Table doesn't have a column with given name")
@@ -19,23 +19,23 @@ def sort_table(table, column_name, mode = True): #True — по возрастанию, False —
 	for cell in table:
 		string_number = cell[1]
 		if string_number == 1:
-			continue #строка заголовков уже была обработана
+			continue #пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if string_number not in table_strings:
-			table_strings[string_number] = {"string number": string_number, "string cells": [], "sort value": None} #string_number — ключ, словарь справа — значение
-		table_strings[string_number]["string cells"].append(cell) #если строка появилась впервые, то в словарь вносится её номер и данные всех её ячеек
+			table_strings[string_number] = {"string number": string_number, "string cells": [], "sort value": None} #string_number пїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		table_strings[string_number]["string cells"].append(cell) #пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
 		if cell[0] == header_id and len(cell) > 2 and cell[2] != None:
 			table_strings[string_number]["sort value"] = cell[2]
 
-	#функция для обработки разных типов данных при сортировке: целое число, десятичное число, строка, None
-	#для обработки сценариев, где несколько разных типов одновременно
-	def sort_case(string): #пара ключ и значение из словаря table_strings
+	#пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ, None
+	#пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	def sort_case(string): #пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ table_strings
 		string_number, string_datas = string
 		sort_value = string_datas["sort value"]
 		if sort_value is None:
 			if mode == True:
-				return (0, 0) #будут стоять в самом начале (если есть другиее типы)
+				return (0, 0) #пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ)
 			else:
-				return (-2, 0) #будут стоять в самом конце
+				return (-2, 0) #пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
 		if isinstance(sort_value, (int, float)):
 			num = float(sort_value)
@@ -63,14 +63,14 @@ def sort_table(table, column_name, mode = True): #True — по возрастанию, False —
 	else:
 		strings_sort = sorted(table_strings.items(),key=sort_case, reverse=True)
 
-	#заполнение новой отсортированной таблицы
+	#пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	sorted_table.extend(headers_cells)
 	string_newnumber = 2
-	for string_number, string_datas in strings_sort: #обработка каждой пары
-		for cell in string_datas["string cells"]: #обработка каждой ячейки в каждой паре
+	for string_number, string_datas in strings_sort: #пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
+		for cell in string_datas["string cells"]: #пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 			new_cell = cell.copy()
 			new_cell[1] = string_newnumber
 			sorted_table.append(new_cell)
-		string_newnumber += 1 #так как теперь обрабатывается пара следующей строки
+		string_newnumber += 1 #пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	return sorted_table
