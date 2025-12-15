@@ -37,6 +37,7 @@ def main():
             if line != '':
                 filename = line
                 filename1 = XlsArrayerOut(filename)
+                print(flag+"$"+f'done seting {filename} as filename1')
             else:
                 print(flag+'$'+ "no path" )
             
@@ -45,6 +46,7 @@ def main():
             if line != '':
                 filename = line
                 filename2 = XlsArrayerOut(filename)
+                print(flag+"$"+f'done seting {filename} as filename1')
             else:
                 print(flag+'$'+ "no path" )
 
