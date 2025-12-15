@@ -28,48 +28,78 @@ def df_to_array(df):
     return array
 
 def array_to_df(arr):
-
     if not arr:
         return pd.DataFrame()
     
+    # Находим максимальные размеры
     maxRow = 0
     maxCol = 0
-
-    for cell in arr:
-        rowNum = int(cell[1])
-        colNum = int(cell[0])
-        if rowNum > maxRow:
-            maxRow = rowNum
-        if colNum > maxCol:
-            maxCol = colNum
     
-    headers = {}
-    for col in range(maxCol + 1):
-        headers[col] = f"Column_{col}"
-    
+    # Сначала находим все номера строк и столбцов
     for cell in arr:
-        if cell[1] == "1":
+        try:
+            rowNum = int(cell[1])
             colNum = int(cell[0])
-            headers[colNum] = cell[2] 
+            if rowNum > maxRow:
+                maxRow = rowNum
+            if colNum > maxCol:
+                maxCol = colNum
+        except (ValueError, IndexError):
+            continue
     
+    # Создаем матрицу данных
+    data_matrix = {}
+    
+    # Заполняем матрицу
+    for cell in arr:
+        try:
+            rowNum = int(cell[1])
+            colNum = int(cell[0])
+            value = cell[2] if cell[2] is not None else ""
+            
+            if rowNum not in data_matrix:
+                data_matrix[rowNum] = {}
+            data_matrix[rowNum][colNum] = value
+        except (ValueError, IndexError):
+            continue
+    
+    # Определяем заголовки из первой строки
+    headers = []
+    
+    # Если есть первая строка
+    if 1 in data_matrix:
+        # Проходим по всем колонкам от 0 до maxCol
+        for col in range(maxCol + 1):
+            if col in data_matrix[1]:
+                header_value = str(data_matrix[1][col])
+                # Если заголовок пустой, создаем стандартный
+                if header_value and header_value.strip():
+                    headers.append(header_value)
+                else:
+                    headers.append(f"Column_{col}")
+            else:
+                headers.append(f"Column_{col}")
+    else:
+        # Если нет первой строки, создаем стандартные заголовки
+        headers = [f"Column_{col}" for col in range(maxCol + 1)]
+    
+    # Собираем данные (начиная со второй строки)
     data = []
     for row in range(2, maxRow + 1):
-        rowData = [""] * (maxCol + 1)
-        
-        for cell in arr:
-            if cell[1] == str(row):
-                colNum = int(cell[0])
-                if colNum <= maxCol:
-                    rowData[colNum] = cell[2]
-        
-        data.append(rowData)
+        row_data = []
+        if row in data_matrix:
+            for col in range(maxCol + 1):
+                if col in data_matrix[row]:
+                    row_data.append(data_matrix[row][col])
+                else:
+                    row_data.append("")
+        else:
+            # Если строки нет в данных, заполняем пустыми значениями
+            row_data = ["" for _ in range(maxCol + 1)]
+        data.append(row_data)
     
-    if headers:
-        sortedHeaders = [headers[col] for col in sorted(headers.keys())]
-        df = pd.DataFrame(data, columns=sortedHeaders)
-    else:
-        df = pd.DataFrame(data)
-    
+    # Создаем DataFrame
+    df = pd.DataFrame(data, columns=headers)
     return df
 
 def XlsArrayerOut(file_path):

@@ -8,6 +8,7 @@ from tablemerge import *
 Table = ''
 filename = ''
 
+
 def Xlsout():
     global Table
     global filename
@@ -22,6 +23,7 @@ def main():
 
     Table2 = '' 
     global filename
+    filename1, filename2 = '', ''
     while True:
         line = sys.stdin.readline().strip() # чтение строки
         splitedline = line.split("$")
@@ -32,13 +34,19 @@ def main():
             line = splitedline[1]
 
         if flag=='SetFILE1': 
-            filename = line
-            filename1 = XlsArrayerOut(filename)
+            if line != '':
+                filename = line
+                filename1 = XlsArrayerOut(filename)
+            else:
+                print(flag+'$'+ "no path" )
             
-
+            
         if flag=='SetFILE2': 
-            filename = line
-            filename2 = XlsArrayerOut(filename)
+            if line != '':
+                filename = line
+                filename2 = XlsArrayerOut(filename)
+            else:
+                print(flag+'$'+ "no path" )
 
         if flag == "MERGE!": # def merge_tables(table1, table2):
 
@@ -66,7 +74,7 @@ def main():
         if flag == "SAVE!":
             file_path = line
             print(flag+'$'+ ' Saving file1 ' )
-            XlsArrayerOut(filename1, file_path)
+            XlsArrayerIn(filename1, file_path)
 
         elif flag=='Debug' and line == "CHECK!":
             i = 0
