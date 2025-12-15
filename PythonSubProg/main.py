@@ -64,7 +64,7 @@ def main():
                 print(flag + '$' + 'merging tables', flush=True)
                 filename1 = merge_tables(filename1, filename2)
                 print(flag + '$' + 'saving merged file...', flush=True)
-                XlsArrayerOut(filename1, save_path)
+                XlsArrayerIn(filename1, save_path)
                 print(flag + '$' + f'Merge ended and saved to {save_path}', flush=True)
             
         elif flag == "COMPARE!":

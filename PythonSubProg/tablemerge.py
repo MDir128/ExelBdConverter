@@ -2,18 +2,26 @@
     try:
         Hat = []
         for box in table:
-            if box[1] == 1:
-                curr_id = box[0]
-                for i in range(2, len(box)):
-                    header_value = box[i]
-                    if header_value != None:
-                        Hat.append([curr_id, header_value])
-                        curr_id = id_cont(curr_id)
+            # Преобразуем номер строки в int
+            try:
+                row_num = int(box[1])
+            except:
+                continue
+            
+            if row_num == 1:  # Первая строка
+                # Преобразуем числовой индекс в буквенный
+                col_idx = int(box[0])
+                letter_id = id_from_index(col_idx)  # Нужна новая функция
+                
+                value = box[2] if len(box) > 2 else None
+                if value is not None and str(value).strip() != '':
+                    Hat.append([letter_id, value])
         return Hat
     except Exception as e:
         print(f"ERROR in HatHunter: {e}")
         print(f"Problematic data: {table}")
-        return []  # Возвращаем пустой список вместо сбоя
+        return []
+
 
 def HatChecker(hat1, hat2):
     try:
@@ -224,3 +232,14 @@ def exception_process(table1, table2):
     if table1 == None and table2 != None:
         print("Table #1 is None. Return table #2")
         return table2
+
+def id_from_index(index):
+    """Преобразует числовой индекс (0, 1, 2) в буквенный ID (A, B, C)"""
+    result = ''
+    index += 1  # 0 -> 1, 1 -> 2 и т.д.
+    while index > 0:
+        index -= 1
+        remainder = index % 26
+        result = chr(65 + remainder) + result
+        index //= 26
+    return result if result else 'A'

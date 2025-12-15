@@ -37,6 +37,9 @@
                     <Button Content="Объединить" HorizontalAlignment="Left" Margin="10,46,0,0"
         VerticalAlignment="Top" Width="84" Click="MergeTablesClick"
         Background="#61D8A2" BorderThickness="1" BorderBrush="White"/>
+                    <Button Content="Сортировка" HorizontalAlignment="Left" Margin="10,81,0,0"
+                        VerticalAlignment="Top" Width="84"
+                        Background="#61D8A2" BorderThickness="1" BorderBrush="White"/>
 
                 </Grid>
 			</TabItem>

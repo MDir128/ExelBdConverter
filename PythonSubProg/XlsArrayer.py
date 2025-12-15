@@ -16,16 +16,23 @@ def df_to_array(df):
     array = []
     for inumber in range(len(df)):
         for iletter in range(len(df.columns)):
-
             value = str(df.iat[inumber, iletter])
-            letter = str(iletter)
-            number = str(inumber + 1)
-            formula = "" # maybe in the future but not tooday
+            # Преобразуем индекс в букву
+            letter = ''
+            col_idx = iletter + 1
+            while col_idx > 0:
+                col_idx -= 1
+                letter = chr(65 + (col_idx % 26)) + letter
+                col_idx //= 26
             
-            cell = [letter, number, value, formula]
+            number = inumber + 1  # int, а не str
+            
+            # Создаем ячейку в формате, который ожидает tablemerge.py
+            cell = [letter, number, value]
             array.append(cell)
     
     return array
+
 
 def array_to_df(arr):
     if not arr:
