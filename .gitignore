@@ -11,3 +11,4 @@
 /venv
 /PythonSubProg/Dockerfile
 /Ducker
+/PythonSubProg/__pycache__
