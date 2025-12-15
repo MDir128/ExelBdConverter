@@ -106,12 +106,12 @@ public partial class MainWindow : Window
         }
     }
 
-    // Кнопка объединения таблиц
     public void MergeTablesClick(Object sender, RoutedEventArgs args)
     {
+        // Шаг 1: Выбираем две таблицы для объединения
         OpenFileDialog openFileDialog = new OpenFileDialog();
         openFileDialog.Filter = "Таблицы (*.xls;*.xlsx)|*.xls;*.xlsx";
-        openFileDialog.Multiselect = true; // Разрешаем множественный выбор
+        openFileDialog.Multiselect = true;
         openFileDialog.Title = "Выберите две таблицы для объединения";
 
         bool? gotcha = openFileDialog.ShowDialog();
@@ -124,12 +124,24 @@ public partial class MainWindow : Window
 
             try
             {
-                // Добавляем файлы в историю
-                AddFileToHistory(firstTablePath);
-                AddFileToHistory(secondTablePath);
+                // Шаг 2: Выбираем куда сохранить результат
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Excel файлы (*.xlsx)|*.xlsx";
+                saveFileDialog.Title = "Сохранить объединенную таблицу";
+                saveFileDialog.DefaultExt = ".xlsx";
+                saveFileDialog.FileName = "Объединенная_таблица.xlsx"; // имя по умолчанию
 
-                // Вызываем процесс объединения
-                MergeTablesProcess(firstTablePath, secondTablePath);
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string savePath = saveFileDialog.FileName;
+
+                    // Добавляем файлы в историю
+                    AddFileToHistory(firstTablePath);
+                    AddFileToHistory(secondTablePath);
+
+                    // Шаг 3: Объединяем и сохраняем
+                    MergeAndSaveTables(firstTablePath, secondTablePath, savePath);
+                }
             }
             catch (Exception ex)
             {
@@ -143,57 +155,122 @@ public partial class MainWindow : Window
                            "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
-    public void MergeTablesProcess(string firstTablePath, string secondTablePath)
+    public async void MergeAndSaveTables(string firstTablePath, string secondTablePath, string savePath)
     {
-        // Создаем процесс для работы с таблицами
-        tableview = new ProccPy(@"PythonSubProg\main.exe", "SetFILE$" + firstTablePath);
+        try
+        {
+            // Создаем процесс для работы с таблицами
+            tableview = new ProccPy(@"PythonSubProg\main.exe", "SetFILE$" + firstTablePath);
 
-        // Создаем обработчик события для получения ответа от процесса
-        EventHandler<string> mergeEventHandler = null;
-        mergeEventHandler = (s, e) => {
-            string response = e;
-            if (response != null)
+            // Ждем немного инициализации
+            await Task.Delay(100);
+
+            // Шаг 1: Объединяем таблицы
+            bool mergeSuccess = await SendMergeCommand(secondTablePath);
+
+            if (mergeSuccess)
             {
-                string[] gotresp = response.Split('$');
-                if (gotresp.Length == 2)
+                // Шаг 2: Сохраняем результат
+                bool saveSuccess = await SendSaveCommand(savePath);
+
+                if (saveSuccess)
                 {
-                    if (gotresp[0] == "Debug")
-                    {
-                        // Получили отладочную информацию
-                        Debug.WriteLine(gotresp[1]);
-                        tableview.GotAnswer -= mergeEventHandler;
-                    }
-                    else if (gotresp[0] == "MERGE!")
-                    {
-                        // Обрабатываем результат объединения
-                        if (gotresp[1].Contains("merge is not allowed"))
-                        {
-                            MessageBox.Show($"Ошибка объединения: {gotresp[1]}", "Ошибка",
-                                          MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        else if (gotresp[1].Contains("Merge ended"))
-                        {
-                            MessageBox.Show("Таблицы успешно объединены!", "Успех",
-                                          MessageBoxButton.OK, MessageBoxImage.Information);
-                        }
-                        tableview.GotAnswer -= mergeEventHandler;
-                    }
+                    MessageBox.Show($"Таблица успешно сохранена в:\n{savePath}", "Успех",
+                                  MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Добавляем результат в историю
+                    AddFileToHistory(savePath);
                 }
                 else
                 {
-                    Debug.WriteLine("Непредвиденный ответ: " + response);
+                    MessageBox.Show("Ошибка при сохранении файла", "Ошибка",
+                                  MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ошибка при объединении таблиц", "Ошибка",
+                              MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            // Закрываем процесс
+            tableview.Close();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
+                          MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async Task<bool> SendMergeCommand(string secondTablePath)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+
+        EventHandler<string> handler = null;
+        handler = (s, e) => {
+            if (!string.IsNullOrEmpty(e))
+            {
+                string[] gotresp = e.Split('$');
+                if (gotresp.Length == 2)
+                {
+                    if (gotresp[0] == "MERGE!")
+                    {
+                        tableview.GotAnswer -= handler;  // Отписываемся сразу
+
+                        if (gotresp[1].Contains("Merge ended"))
+                        {
+                            Debug.WriteLine("Объединение успешно");
+                            tcs.SetResult(true);
+                        }
+                        else if (gotresp[1].Contains("merge is not allowed"))
+                        {
+                            Debug.WriteLine($"Ошибка объединения: {gotresp[1]}");
+                            tcs.SetResult(false);
+                        }
+                    }
                 }
             }
         };
 
-        // Подписываемся на событие получения ответа
-        tableview.GotAnswer += mergeEventHandler;
+        tableview.GotAnswer += handler;
 
-        // Отправляем команду на объединение таблиц
-        // Формат команды: "MERGE!$путь_к_второй_таблице"
-        tableview.ThrowaCommandDataResp($"MERGE!${secondTablePath}", null);
+        // Отправляем команду
+        await tableview.ThrowaCommandDataResp($"MERGE!${secondTablePath}", null);
 
-        Debug.WriteLine("Запущен процесс объединения таблиц");
+        // Ждем ответа с таймаутом
+        return await tcs.Task.WaitAsync(TimeSpan.FromSeconds(30));
+    }
+
+    private async Task<bool> SendSaveCommand(string savePath)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+
+        EventHandler<string> handler = null;
+        handler = (s, e) => {
+            if (!string.IsNullOrEmpty(e))
+            {
+                string[] gotresp = e.Split('$');
+                if (gotresp.Length == 2)
+                {
+                    if (gotresp[0] == "SAVE!")
+                    {
+                        tableview.GotAnswer -= handler;  // Отписываемся сразу
+
+                        Debug.WriteLine($"Ответ на сохранение: {gotresp[1]}");
+                        tcs.SetResult(true);
+                    }
+                }
+            }
+        };
+
+        tableview.GotAnswer += handler;
+
+        // Отправляем команду
+        await tableview.ThrowaCommandDataResp($"SAVE!${savePath}", null);
+
+        // Ждем ответа с таймаутом
+        return await tcs.Task.WaitAsync(TimeSpan.FromSeconds(30));
     }
 
 

@@ -48,17 +48,26 @@ def main():
             else:
                 print(flag+'$'+ "no path" )
 
-        if flag == "MERGE!": # def merge_tables(table1, table2):
-
+        if flag == "MERGE!":
+            # line содержит путь для сохранения
+            save_path = line
+    
             err_list = '' 
-            if filename1 == '': err_list += 'NO FILENAME1 (try: "SetFILE1)'
-            elif filename2 == '': err_list += 'NO FILENAME2 (try: "SetFILE2)'
-            
-            if err_list != '': print(flag+ '$' + 'merge is not allowed, there is no:', *err_list, flush=True)
+            if filename1 == '': 
+                err_list += 'NO FILENAME1 (try: "SetFILE1)'
+            elif filename2 == '': 
+                err_list += 'NO FILENAME2 (try: "SetFILE2)'
+    
+            if err_list != '': 
+                print(flag + '$' + 'merge is not allowed, there is no: ' + err_list, flush=True)
             else: 
-                print(flag+ '$' + 'merging tables')
+                print(flag + '$' + 'merging tables', flush=True)
                 filename1 = merge_tables(filename1, filename2)
-                print(flag+ '$' + 'Merge ended, file1 changed ', filename1, flush=True)
+        
+        # Автоматически сохраняем результат
+        print(flag + '$' + 'saving merged file...', flush=True)
+        XlsArrayerOut(filename1, save_path)
+        print(flag + '$' + f'Merge ended and saved to {save_path}', flush=True)
             
         if flag == "COMPARE!":
 
