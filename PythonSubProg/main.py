@@ -33,7 +33,7 @@ def main():
             flag = splitedline[0]
             line = splitedline[1]
 
-        if flag=='SetFILE1': 
+        elif flag=='SetFILE1': 
             if line != '':
                 filename = line
                 filename1 = XlsArrayerOut(filename)
@@ -41,14 +41,14 @@ def main():
                 print(flag+'$'+ "no path" )
             
             
-        if flag=='SetFILE2': 
+        elif flag=='SetFILE2': 
             if line != '':
                 filename = line
                 filename2 = XlsArrayerOut(filename)
             else:
                 print(flag+'$'+ "no path" )
 
-        if flag == "MERGE!":
+        elif flag == "MERGE!":
             # line содержит путь для сохранения
             save_path = line
     
@@ -64,12 +64,12 @@ def main():
                 print(flag + '$' + 'merging tables', flush=True)
                 filename1 = merge_tables(filename1, filename2)
         
-        # Автоматически сохраняем результат
-        print(flag + '$' + 'saving merged file...', flush=True)
-        XlsArrayerOut(filename1, save_path)
-        print(flag + '$' + f'Merge ended and saved to {save_path}', flush=True)
+            # Автоматически сохраняем результат
+            print(flag + '$' + 'saving merged file...', flush=True)
+            XlsArrayerOut(filename1, save_path)
+            print(flag + '$' + f'Merge ended and saved to {save_path}', flush=True)
             
-        if flag == "COMPARE!":
+        elif flag == "COMPARE!":
 
             err_list = '' 
             if filename1 == '': err_list += 'NO FILENAME1 (try: "SetFILE1)'
@@ -80,7 +80,7 @@ def main():
             else:
                 print(flag+ '$', tables_differences(filename1, filename2, False), flush=True) #настроен на печать вывода 
 
-        if flag == "SAVE!":
+        elif flag == "SAVE!":
             file_path = line
             print(flag+'$'+ ' Saving file1 ' )
             XlsArrayerIn(filename1, file_path)
