@@ -2,8 +2,8 @@
 # Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
 ################################################################################
 
-/obj
-/bin/Debug/net8.0-windows
+*/obj
+*/bin/Debug/net8.0-windows
 /.vs
 *.sln
 *.csproj.user
