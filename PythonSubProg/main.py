@@ -28,12 +28,12 @@ def main():
         line = sys.stdin.readline().strip() # чтение строки
         splitedline = line.split("$")
 
-        flag = "none"
+        flag = line
         if len(splitedline) == 2:
             flag = splitedline[0]
             line = splitedline[1]
 
-        elif flag=='SetFILE1': 
+        if flag=='SetFILE1': 
             if line != '':
                 filename = line
                 filename1 = XlsArrayerOut(filename)
