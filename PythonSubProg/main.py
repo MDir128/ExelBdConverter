@@ -28,25 +28,23 @@ def main():
         line = sys.stdin.readline().strip() # чтение строки
         splitedline = line.split("$")
 
-        flag = line
+        flag = "none"
         if len(splitedline) == 2:
             flag = splitedline[0]
             line = splitedline[1]
 
-        if flag=='SetFILE1': 
+        if flag =='SetFILE1': 
             if line != '':
                 filename = line
                 filename1 = XlsArrayerOut(filename)
-                print(flag+"$"+f'done seting {filename} as filename1')
             else:
                 print(flag+'$'+ "no path" )
             
             
-        elif flag=='SetFILE2': 
+        elif flag =='SetFILE2': 
             if line != '':
                 filename = line
                 filename2 = XlsArrayerOut(filename)
-                print(flag+"$"+f'done seting {filename} as filename1')
             else:
                 print(flag+'$'+ "no path" )
 
@@ -65,11 +63,9 @@ def main():
             else: 
                 print(flag + '$' + 'merging tables', flush=True)
                 filename1 = merge_tables(filename1, filename2)
-        
-            # Автоматически сохраняем результат
-            print(flag + '$' + 'saving merged file...', flush=True)
-            XlsArrayerOut(filename1, save_path)
-            print(flag + '$' + f'Merge ended and saved to {save_path}', flush=True)
+                print(flag + '$' + 'saving merged file...', flush=True)
+                XlsArrayerOut(filename1, save_path)
+                print(flag + '$' + f'Merge ended and saved to {save_path}', flush=True)
             
         elif flag == "COMPARE!":
 

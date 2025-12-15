@@ -1,28 +1,37 @@
 ﻿def HatHunter(table):
-    Hat = []
-    for box in table:
-        if box[1] == 1:
-            curr_id = box[0]
-            for i in range(2, len(box)):
-                header_value = box[i]
-                if header_value != None:
-                    Hat.append([curr_id, header_value]) #исправлена ошибка, где все заголовки получали одинаковую букву в id — "A"
-                    curr_id = id_cont(curr_id) #теперь для следующего заголовка будет генерироваться следующая буква, то есть "B"
-    return Hat
+    try:
+        Hat = []
+        for box in table:
+            if box[1] == 1:
+                curr_id = box[0]
+                for i in range(2, len(box)):
+                    header_value = box[i]
+                    if header_value != None:
+                        Hat.append([curr_id, header_value])
+                        curr_id = id_cont(curr_id)
+        return Hat
+    except Exception as e:
+        print(f"ERROR in HatHunter: {e}")
+        print(f"Problematic data: {table}")
+        return []  # Возвращаем пустой список вместо сбоя
 
 def HatChecker(hat1, hat2):
-    hat1 = HatHunter(hat1)
-    hat2 = HatHunter(hat2)
-    matches = []
-    for i in range(len(hat1)):
-        ha=hat1[i]
-        a=ha[1]
-        for x in range(len(hat2)):
-            hb = hat2[x]
-            b = hb[1]
-            if a == b:
-                matches.append([ha[0], hb[0]])
-    return matches
+    try:
+        hat1 = HatHunter(hat1)
+        hat2 = HatHunter(hat2)
+        matches = []
+        for i in range(len(hat1)):
+            ha = hat1[i]
+            a = ha[1]
+            for x in range(len(hat2)):
+                hb = hat2[x]
+                b = hb[1]
+                if a == b:
+                    matches.append([ha[0], hb[0]])
+        return matches
+    except Exception as e:
+        print(f"ERROR in HatChecker: {e}")
+        return []  # Возвращаем пустой список вместо сбоя
 
 #функция объединения двух таблиц на основе общих данных
 def merge_tables(table1, table2):
