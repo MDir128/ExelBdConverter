@@ -8,7 +8,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ExelBdConverter
+namespace ExcelBdConverter
 {
     // Процесс потока Питона - при создании Запускает в качестве нового процесса файл питона, казанный в конструкторе
     // для взаимодействия с процессом использовать функцию ThrowaCommandDataResp -

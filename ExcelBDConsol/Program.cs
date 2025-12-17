@@ -10,6 +10,7 @@ namespace ExcelBDConsol
     {
         static void Main(string[] args)
         {
+            ExcelBdConverter.Tests.RunTest();
         }
     }
 }

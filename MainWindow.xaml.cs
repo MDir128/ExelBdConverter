@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace ExelBdConverter;
+namespace ExcelBdConverter;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

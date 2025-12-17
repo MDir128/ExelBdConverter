@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExelBdConverter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90fac767a2b01b0c4f96226638a1bf12cc854f66")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c18941a698aee5c7d4f291cc88e78be9f71eff31")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExelBdConverter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExelBdConverter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

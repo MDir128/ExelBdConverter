@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace ExelBdConverter;
+namespace ExcelBdConverter;
 
 /// <summary>
 /// Interaction logic for App.xaml
