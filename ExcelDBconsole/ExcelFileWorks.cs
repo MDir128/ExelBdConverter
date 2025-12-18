@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ExcelDBconsole
 {
-    internal class Class1
+    internal class ExcelFileWorks
     {
+
     }
 }
