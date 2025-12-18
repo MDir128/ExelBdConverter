@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExcelDBconsole;
+using System;
 using System.Collections.Generic;
 
 namespace ExcelBDConsol
@@ -59,6 +60,13 @@ namespace ExcelBDConsol
 			{
 				Console.WriteLine($"Неожиданная ошибка: {ex.Message}");
 			}
+
+			List<List<object>> lists1 = ExcelFileWorks.GetDataFromExcelFile("Sample1.xlsx");
+			List<List<object>> lists2 = ExcelFileWorks.GetDataFromExcelFile("Sample2.xlsx");
+			PrintTable(lists1);
+			PrintTable(lists2);
+			List<List<object>> output_lust = TableMerge.MergeTables(lists1, lists2);
+			ExcelFileWorks.SaveDataToExcel("sampleoutput.xlsx", output_lust, "книга 1");
 		}
 		private static void PrintTable(List<List<object>> table)
 		{
@@ -84,5 +92,6 @@ namespace ExcelBDConsol
 				Console.WriteLine("]");
 			}
 		}
+		
 	}
 }

@@ -33,5 +33,19 @@ namespace ExcelDBconsole
             }
             return outcome_list;
         }
+        public static void SaveDataToExcel(string path, List<List<object>> data, string worksheet_name) {
+            using (var worlbook = new XLWorkbook()) {
+                var worksheet = worlbook.Worksheets.Add(worksheet_name);
+                foreach (var cell in data) {
+                    string? columm = Convert.ToString(cell[0]);
+                    string? row_num = Convert.ToString(cell[1]);
+                    string? cell_data = Convert.ToString(cell[2]);
+                    if (columm != null && cell_data != null && cell_data!=null) {
+                        worksheet.Cell(columm + row_num).Value = cell_data;
+                    }
+                }
+                worlbook.SaveAs(path);
+            }
+        }
     }
 }
