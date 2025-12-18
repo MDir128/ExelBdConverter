@@ -13,3 +13,5 @@ D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\refint\ExcelDBconsole.dll
 D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.pdb
 D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.genruntimeconfig.cache
 D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ref\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.csproj.AssemblyReference.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBc.8858E747.Up2Date
