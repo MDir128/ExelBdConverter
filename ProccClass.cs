@@ -39,7 +39,7 @@ namespace ExcelBdConverter
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = false,
+                CreateNoWindow = true,
                 UseShellExecute = false,
                 Arguments = ""
                 //WorkingDirectory = @"PythonSubProg"
@@ -51,6 +51,15 @@ namespace ExcelBdConverter
             Debug.WriteLine("processstarted");
             stdin = pysubproc.StandardInput; //переопределение потока ввода
             stdout = pysubproc.StandardOutput; // переопределение потока вывода
+            Task.Run(async () =>
+            {
+                while (!pysubproc.HasExited)
+                {
+                    var line = await stdout.ReadLineAsync();
+                    if (line != null)
+                        GotAnswer?.Invoke(this, line);
+                }
+            });
             pysubproc.ErrorDataReceived += (s, e) =>
             {
                 if (!string.IsNullOrEmpty(e.Data))

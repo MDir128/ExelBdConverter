@@ -159,12 +159,12 @@ public partial class MainWindow : Window
     {
         tableview = new ProccPy(
             @"ExcelDBconsole\ExcelDBconsole.exe",
-            $"SetFILE${firstTablePath}"
+            $"SetFILE1${firstTablePath}"
         );
 
         // даём процессу стартануть
         await Task.Delay(100);
-
+        tableview.ThrowaCommandDataResp($"SetFILE2${secondTablePath}", null);
         bool mergeOk = await SendMergeCommand(secondTablePath);
         if (!mergeOk)
             throw new Exception("Merge failed");
@@ -221,35 +221,47 @@ public partial class MainWindow : Window
     }
 
 
-    private async Task<bool> SendSaveCommand(string savePath)
+    private Task<bool> SendSaveCommand(string savePath)
     {
         var tcs = new TaskCompletionSource<bool>();
 
-        EventHandler<string> handler = null;
-        handler = (s, e) => {
-            if (!string.IsNullOrEmpty(e))
-            {
-                string[] gotresp = e.Split('$');
-                if (gotresp.Length == 2)
-                {
-                    if (gotresp[0] == "SAVE!")
-                    {
-                        tableview.GotAnswer -= handler;  // Отписываемся сразу
+        EventHandler<string>? handler = null;
+        handler = (s, e) =>
+        {
+            Debug.WriteLine(e);
+            if (string.IsNullOrEmpty(e))
+                return;
 
-                        Debug.WriteLine($"Ответ на сохранение: {gotresp[1]}");
-                        tcs.SetResult(true);
-                    }
-                }
-            }
+            var parts = e.Split('$', 2);
+            if (parts.Length != 2)
+                return;
+
+            if (parts[0] != "SAVE!")
+                return;
+
+            tableview.GotAnswer -= handler;
+
+            tcs.TrySetResult(parts[1].Contains("Merge ended"));
         };
 
         tableview.GotAnswer += handler;
 
-        // Отправляем команду
-        await tableview.ThrowaCommandDataResp($"SAVE!${savePath}", null);
+        // ❗ отправка БЕЗ await
+        tableview.ThrowaCommandDataResp($"SAVE!${savePath}", null);
 
-        // Ждем ответа с таймаутом
-        return await tcs.Task.WaitAsync(TimeSpan.FromSeconds(30));
+        return Task.WhenAny(
+            tcs.Task,
+            Task.Delay(TimeSpan.FromSeconds(30))
+        ).ContinueWith(t =>
+        {
+            if (t.Result != tcs.Task)
+            {
+                tableview.GotAnswer -= handler;
+                return false;
+            }
+
+            return tcs.Task.Result;
+        });
     }
 
 
@@ -274,7 +286,7 @@ public partial class MainWindow : Window
         // процесс настроен так, что необходимо при работе с ним в первую
         // очередь запускать метод ThrowStartDataInProcc(),
         // в котором он запомнит адресс файла с которым работает
-        tableview = new ProccPy(@"ExcelDBconsole\ExcelDBconsole.exe", "SetFILE$" + table_path);
+        tableview = new ProccPy(@"ExcelDBconsole\ExcelDBconsole.exe", "SetFILE1$" + table_path);
         testProcess(tableview);
         excelpro.Exited += (s, e) =>
         {

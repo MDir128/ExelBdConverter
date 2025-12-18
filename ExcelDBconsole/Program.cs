@@ -150,8 +150,7 @@ namespace ExcelDBconsole
                 Console.WriteLine("Объединение таблиц...");
                 mergedTable = TableMerge.MergeTables(table1, table2);
 
-                Console.WriteLine("✓ Таблицы успешно объединены!");
-                Console.WriteLine($"  Результат: {GetRowCount(mergedTable)} строк, {GetColumnCount(mergedTable)} колонок");
+                Console.WriteLine("MERGE!$Merge ended");
             }
             catch (ArgumentException ex)
             {
@@ -190,7 +189,7 @@ namespace ExcelDBconsole
                     sheetName = "Sheet1";
 
                 ExcelFileWorks.SaveDataToExcel(filePath, mergedTable, sheetName);
-                Console.WriteLine($"✓ Результат сохранен: {filePath} (лист: {sheetName})");
+                Console.WriteLine($"SAVE!$Merge ended");
             }
             catch (Exception ex)
             {
