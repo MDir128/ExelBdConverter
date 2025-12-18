@@ -155,92 +155,71 @@ public partial class MainWindow : Window
                            "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
-    public async void MergeAndSaveTables(string firstTablePath, string secondTablePath, string savePath)
+    public async Task MergeAndSaveTables(string firstTablePath, string secondTablePath, string savePath)
     {
-        try
-        {
-            // Создаем процесс для работы с таблицами
-            tableview = new ProccPy(@"ExcelDBconsole\ExcelDBconsole.exe", "SetFILE$" + firstTablePath);
+        tableview = new ProccPy(
+            @"ExcelDBconsole\ExcelDBconsole.exe",
+            $"SetFILE${firstTablePath}"
+        );
 
-            // Ждем немного инициализации
-            await Task.Delay(100);
+        // даём процессу стартануть
+        await Task.Delay(100);
 
-            // Шаг 1: Объединяем таблицы
-            bool mergeSuccess = await SendMergeCommand(secondTablePath);
+        bool mergeOk = await SendMergeCommand(secondTablePath);
+        if (!mergeOk)
+            throw new Exception("Merge failed");
 
-            if (mergeSuccess)
-            {
-                // Шаг 2: Сохраняем результат
-                bool saveSuccess = await SendSaveCommand(savePath);
+        bool saveOk = await SendSaveCommand(savePath);
+        if (!saveOk)
+            throw new Exception("Save failed");
 
-                if (saveSuccess)
-                {
-                    MessageBox.Show($"Таблица успешно сохранена в:\n{savePath}", "Успех",
-                                  MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    // Добавляем результат в историю
-                    AddFileToHistory(savePath);
-                }
-                else
-                {
-                    MessageBox.Show("Ошибка при сохранении файла", "Ошибка",
-                                  MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Ошибка при объединении таблиц", "Ошибка",
-                              MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            // Закрываем процесс
-            tableview.Close();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
-                          MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        tableview.Close();
     }
 
-    private async Task<bool> SendMergeCommand(string secondTablePath)
+
+    private Task<bool> SendMergeCommand(string secondTablePath)
     {
         var tcs = new TaskCompletionSource<bool>();
 
-        EventHandler<string> handler = null;
-        handler = (s, e) => {
-            if (!string.IsNullOrEmpty(e))
-            {
-                string[] gotresp = e.Split('$');
-                if (gotresp.Length == 2)
-                {
-                    if (gotresp[0] == "MERGE!")
-                    {
-                        tableview.GotAnswer -= handler;  // Отписываемся сразу
+        EventHandler<string>? handler = null;
+        handler = (s, e) =>
+        {
+            Debug.WriteLine(e);
+            if (string.IsNullOrEmpty(e))
+                return;
 
-                        if (gotresp[1].Contains("Merge ended"))
-                        {
-                            Debug.WriteLine("Объединение успешно");
-                            tcs.SetResult(true);
-                        }
-                        else if (gotresp[1].Contains("merge is not allowed"))
-                        {
-                            Debug.WriteLine($"Ошибка объединения: {gotresp[1]}");
-                            tcs.SetResult(false);
-                        }
-                    }
-                }
-            }
+            var parts = e.Split('$', 2);
+            if (parts.Length != 2)
+                return;
+
+            if (parts[0] != "MERGE!")
+                return;
+
+            tableview.GotAnswer -= handler;
+
+            tcs.TrySetResult(parts[1].Contains("Merge ended"));
         };
 
         tableview.GotAnswer += handler;
 
-        // Отправляем команду
-        await tableview.ThrowaCommandDataResp($"MERGE!${secondTablePath}", null);
+        // ❗ отправка БЕЗ await
+        tableview.ThrowaCommandDataResp($"MERGE!${secondTablePath}", null);
 
-        // Ждем ответа с таймаутом
-        return await tcs.Task.WaitAsync(TimeSpan.FromSeconds(30));
+        return Task.WhenAny(
+            tcs.Task,
+            Task.Delay(TimeSpan.FromSeconds(30))
+        ).ContinueWith(t =>
+        {
+            if (t.Result != tcs.Task)
+            {
+                tableview.GotAnswer -= handler;
+                return false;
+            }
+
+            return tcs.Task.Result;
+        });
     }
+
 
     private async Task<bool> SendSaveCommand(string savePath)
     {

@@ -15,20 +15,20 @@ namespace ExcelDBconsole
 
         static void Main(string[] args)
         {
-            Console.WriteLine("=== Excel BD Converter (Консольная версия) ===");
-            Console.WriteLine("Команды:");
-            Console.WriteLine("  SetFILE1 <путь>  - загрузить первую таблицу");
-            Console.WriteLine("  SetFILE2 <путь>  - загрузить вторую таблицу");
-            Console.WriteLine("  MERGE!           - объединить загруженные таблицы");
-            Console.WriteLine("  SAVE! <путь>     - сохранить результат");
-            Console.WriteLine("=============================================\n");
+            //Console.WriteLine("=== Excel BD Converter (Консольная версия) ===");
+            //Console.WriteLine("Команды:");
+            //Console.WriteLine("  SetFILE1 <путь>  - загрузить первую таблицу");
+            //Console.WriteLine("  SetFILE2 <путь>  - загрузить вторую таблицу");
+            //Console.WriteLine("  MERGE!           - объединить загруженные таблицы");
+            //Console.WriteLine("  SAVE! <путь>     - сохранить результат");
+            //Console.WriteLine("=============================================\n");
 
             // Бесконечный цикл обработки команд
             while (true)
             {
                 try
                 {
-                    Console.Write("> ");
+                    //Console.Write("> ");
                     string input = Console.ReadLine()?.Trim();
 
                     if (string.IsNullOrEmpty(input))
@@ -72,6 +72,7 @@ namespace ExcelDBconsole
 
                 default:
                     Console.WriteLine($"Неизвестная команда: {cmd}");
+                    throw new Exception("FUCK YOU");
                     break;
             }
         }

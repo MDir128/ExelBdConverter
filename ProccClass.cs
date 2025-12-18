@@ -41,8 +41,10 @@ namespace ExcelBdConverter
                 RedirectStandardError = true,
                 CreateNoWindow = false,
                 UseShellExecute = false,
+                Arguments = ""
                 //WorkingDirectory = @"PythonSubProg"
             };
+
             pysubproc.StartInfo = StartInfo;
             pysubproc.Start(); //запуск процесса
             pysubproc.BeginErrorReadLine(); //покдключение потока ошибок
@@ -92,18 +94,11 @@ namespace ExcelBdConverter
 
         //этот метод подразумевает, что данные в ответ будут
         //Подразумевается, что ответ отловят с другой стороны через EventHandler GotAnswer, где в качестве аргумента он и получит ответ потока
-        public async Task ThrowaCommandDataResp(string command, string data)
+        public Task ThrowaCommandDataResp(string command, string data)
         {
-            if (data != null)
-            {
-                stdin.WriteLine(command + ":" + data);
-            }
-            else
-            {
-                stdin.WriteLine(command);
-            }
+            stdin.WriteLine(data != null ? $"{command}:{data}" : command);
             stdin.Flush();
-            await GetAnswer();
+            return Task.CompletedTask;
         }
         public void ChecProcc()
         {

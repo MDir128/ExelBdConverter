@@ -1,0 +1,17 @@
+D:\source\ExelBdConverter\bin\Release\net8.0-windows\ExcelDBconsole\ExcelDBconsole.exe
+D:\source\ExelBdConverter\bin\Release\net8.0-windows\ExcelDBconsole\ExcelDBconsole.deps.json
+D:\source\ExelBdConverter\bin\Release\net8.0-windows\ExcelDBconsole\ExcelDBconsole.runtimeconfig.json
+D:\source\ExelBdConverter\bin\Release\net8.0-windows\ExcelDBconsole\ExcelDBconsole.dll
+D:\source\ExelBdConverter\bin\Release\net8.0-windows\ExcelDBconsole\ExcelDBconsole.pdb
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.csproj.AssemblyReference.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.GeneratedMSBuildEditorConfig.editorconfig
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.AssemblyInfoInputs.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.AssemblyInfo.cs
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.csproj.CoreCompileInputs.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.sourcelink.json
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBc.8858E747.Up2Date
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\refint\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.pdb
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ExcelDBconsole.genruntimeconfig.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Release\ref\ExcelDBconsole.dll
