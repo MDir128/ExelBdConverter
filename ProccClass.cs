@@ -39,7 +39,7 @@ namespace ExcelBdConverter
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = true,
+                CreateNoWindow = false,
                 UseShellExecute = false,
                 //WorkingDirectory = @"PythonSubProg"
             };

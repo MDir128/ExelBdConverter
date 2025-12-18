@@ -15,3 +15,20 @@ C:\Users\petri\Desktop\Важная папка\Учеба\СЕМ 3-4\АЛГОС\
 C:\Users\petri\Desktop\Важная папка\Учеба\СЕМ 3-4\АЛГОС\Excel_Converter\ExcelDBconsole\obj\Debug\ExcelDBconsole.pdb
 C:\Users\petri\Desktop\Важная папка\Учеба\СЕМ 3-4\АЛГОС\Excel_Converter\ExcelDBconsole\obj\Debug\ExcelDBconsole.genruntimeconfig.cache
 C:\Users\petri\Desktop\Важная папка\Учеба\СЕМ 3-4\АЛГОС\Excel_Converter\ExcelDBconsole\obj\Debug\ref\ExcelDBconsole.dll
+D:\source\ExelBdConverter\bin\Debug\net8.0-windows\ExcelDBconsole\ExcelDBconsole.exe
+D:\source\ExelBdConverter\bin\Debug\net8.0-windows\ExcelDBconsole\ExcelDBconsole.deps.json
+D:\source\ExelBdConverter\bin\Debug\net8.0-windows\ExcelDBconsole\ExcelDBconsole.runtimeconfig.json
+D:\source\ExelBdConverter\bin\Debug\net8.0-windows\ExcelDBconsole\ExcelDBconsole.dll
+D:\source\ExelBdConverter\bin\Debug\net8.0-windows\ExcelDBconsole\ExcelDBconsole.pdb
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.csproj.AssemblyReference.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.GeneratedMSBuildEditorConfig.editorconfig
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.AssemblyInfoInputs.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.AssemblyInfo.cs
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.csproj.CoreCompileInputs.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.sourcelink.json
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBc.8858E747.Up2Date
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\refint\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.pdb
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ExcelDBconsole.genruntimeconfig.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\ref\ExcelDBconsole.dll

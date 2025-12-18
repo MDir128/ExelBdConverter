@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExcelDBconsole")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+24a02c3a96e6519183dcee5a863f28db8c89a8ce")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe57d494bdc70880c590a8a03d290e1f5bc3cd75")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExcelDBconsole")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExcelDBconsole")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

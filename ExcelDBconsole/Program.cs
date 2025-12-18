@@ -48,7 +48,7 @@ namespace ExcelDBconsole
 
         private static void ProcessCommand(string command)
         {
-            string[] parts = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = command.Split('$', 2, StringSplitOptions.RemoveEmptyEntries);
             string cmd = parts[0].ToUpper();
             string arg = parts.Length > 1 ? parts[1].Trim('"') : null;
 

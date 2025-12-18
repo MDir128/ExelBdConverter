@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using ExelBdConverter;
+using ExcelBdConverter;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -45,7 +45,7 @@ namespace ExcelBdConverter {
         /// InitializeComponent
         /// </summary>
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.9.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.11.0")]
         public void InitializeComponent() {
             
             #line 6 "..\..\..\App.xaml"
@@ -60,7 +60,7 @@ namespace ExcelBdConverter {
         /// </summary>
         [System.STAThreadAttribute()]
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.9.0")]
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "9.0.11.0")]
         public static void Main() {
             ExcelBdConverter.App app = new ExcelBdConverter.App();
             app.InitializeComponent();
