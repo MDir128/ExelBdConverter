@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBdConverter", "ExcelBd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelDBconsole", "ExcelDBconsole\ExcelDBconsole.csproj", "{2B32A21C-84BD-47FD-A1F5-913F61311CD4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{5CF40948-578C-4FD6-B68C-9C2D10B296D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{2B32A21C-84BD-47FD-A1F5-913F61311CD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B32A21C-84BD-47FD-A1F5-913F61311CD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B32A21C-84BD-47FD-A1F5-913F61311CD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CF40948-578C-4FD6-B68C-9C2D10B296D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CF40948-578C-4FD6-B68C-9C2D10B296D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CF40948-578C-4FD6-B68C-9C2D10B296D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CF40948-578C-4FD6-B68C-9C2D10B296D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

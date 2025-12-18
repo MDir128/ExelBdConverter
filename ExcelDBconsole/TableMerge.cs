@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace ExcelBDConsol
 {
-    public class TableMerge
+    public static class TableMerge
     {
         //главная функция объединения двух таблиц на основе общих данных
         public static List<List<object>> MergeTables(List<List<object>> table1, List<List<object>> table2)

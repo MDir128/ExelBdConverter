@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ExcelBdConverter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f925b2a98711066d01e882da4cf1bf798d98cb59")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+373ff98f6e803bd14fbea23d33cb80c2a6a752e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("ExcelBdConverter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ExcelBdConverter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
