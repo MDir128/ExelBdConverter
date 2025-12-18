@@ -1,0 +1,15 @@
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.GeneratedMSBuildEditorConfig.editorconfig
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.AssemblyInfoInputs.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.AssemblyInfo.cs
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.csproj.CoreCompileInputs.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.sourcelink.json
+D:\source\ExelBdConverter\ExcelDBconsole\bin\Debug\net8.0\ExcelDBconsole.exe
+D:\source\ExelBdConverter\ExcelDBconsole\bin\Debug\net8.0\ExcelDBconsole.deps.json
+D:\source\ExelBdConverter\ExcelDBconsole\bin\Debug\net8.0\ExcelDBconsole.runtimeconfig.json
+D:\source\ExelBdConverter\ExcelDBconsole\bin\Debug\net8.0\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\bin\Debug\net8.0\ExcelDBconsole.pdb
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\refint\ExcelDBconsole.dll
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.pdb
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ExcelDBconsole.genruntimeconfig.cache
+D:\source\ExelBdConverter\ExcelDBconsole\obj\Debug\net8.0\ref\ExcelDBconsole.dll
