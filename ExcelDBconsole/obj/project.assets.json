@@ -297,23 +297,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {},
+    "C:\\Users\\petri\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\source\\ExelBdConverter\\ExcelDBconsole\\ExcelDBconsole.csproj",
+      "projectUniqueName": "C:\\Users\\petri\\Desktop\\Важная папка\\Учеба\\СЕМ 3-4\\АЛГОС\\Excel_Converter\\ExcelDBconsole\\ExcelDBconsole.csproj",
       "projectName": "ExcelDBconsole",
-      "projectPath": "D:\\source\\ExelBdConverter\\ExcelDBconsole\\ExcelDBconsole.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\source\\ExelBdConverter\\ExcelDBconsole\\obj\\",
+      "projectPath": "C:\\Users\\petri\\Desktop\\Важная папка\\Учеба\\СЕМ 3-4\\АЛГОС\\Excel_Converter\\ExcelDBconsole\\ExcelDBconsole.csproj",
+      "packagesPath": "C:\\Users\\petri\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\petri\\Desktop\\Важная папка\\Учеба\\СЕМ 3-4\\АЛГОС\\Excel_Converter\\ExcelDBconsole\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\petri\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -367,7 +367,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
