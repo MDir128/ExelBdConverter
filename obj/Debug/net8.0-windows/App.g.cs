@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using ExelBdConverter;
+using ExcelBdConverter;
 using System;
 using System.Diagnostics;
 using System.Windows;

@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExcelDBconsole\**" />
+    <EmbeddedResource Remove="ExcelDBconsole\**" />
+    <None Remove="ExcelDBconsole\**" />
+    <Page Remove="ExcelDBconsole\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="main.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
